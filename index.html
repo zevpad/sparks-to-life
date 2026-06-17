@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign up to be a closed Android beta tester for 14 days on Google Play." />
+  <title>Help Test My Android App for 14 Days</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="container">
+      <span class="badge">Closed Beta · Android Only · 14 Days</span>
+      <h1>I need 14 reliable<br>Android testers.</h1>
+      <p class="subheadline">
+        Please only sign up if you can commit to downloading the app,
+        joining the Google Play test, and keeping it installed for the
+        <strong>full 14 days.</strong>
+      </p>
+      <a href="#signup" class="btn-primary">Yes, I Can Commit for 14 Days →</a>
+      <p class="hero-note">
+        The app may be free or may cost around ₪1, depending on the test setup in Google Play.
+      </p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ─── WHAT I NEED ───────────────────────────────────────────────────── -->
+    <section class="section" id="requirements">
+      <div class="container">
+        <h2>What I Need From You</h2>
+        <ul class="checklist">
+          <li>You have an Android phone.</li>
+          <li>You have a Gmail account connected to Google Play.</li>
+          <li>You will join the private Google Play test.</li>
+          <li>You will download and install the app.</li>
+          <li>You will keep it installed for <strong>14 full days.</strong></li>
+          <li>You will not uninstall it or opt out during the test.</li>
+          <li>You will open the app a few times if asked.</li>
+          <li>You will message me if something does not work.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ─── COMMITMENT NOTICE ─────────────────────────────────────────────── -->
+    <section class="section section-notice" id="commitment">
+      <div class="container">
+        <div class="notice-card">
+          <div class="notice-icon" aria-hidden="true">⚠</div>
+          <h2>This Is Simple, But Please Take It Seriously</h2>
+          <p>
+            This is not hard, but it does require follow-through. Google needs
+            testers to remain opted in for the testing period. If people
+            uninstall, opt out, or disappear, it can delay the app launch.
+          </p>
+          <p class="notice-emphasis">
+            Please only sign up if you are willing to help for the full two weeks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── HOW IT WORKS ──────────────────────────────────────────────────── -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <h2>How It Works</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-text">Fill out the tester signup form below.</span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-text">I add your Gmail to the Google Play closed test.</span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-text">I send you the Google Play test link.</span>
+          </li>
+          <li>
+            <span class="step-number">4</span>
+            <span class="step-text">You tap <em>"Join the test"</em> in Google Play.</span>
+          </li>
+          <li>
+            <span class="step-number">5</span>
+            <span class="step-text">You install the app.</span>
+          </li>
+          <li>
+            <span class="step-number">6</span>
+            <span class="step-text">You keep it installed for 14 days.</span>
+          </li>
+          <li>
+            <span class="step-number">7</span>
+            <span class="step-text">You send feedback if anything breaks.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ─── SIGNUP FORM ───────────────────────────────────────────────────── -->
+    <section class="section section-form" id="signup">
+      <div class="container">
+        <div class="form-card">
+          <h2>Sign Up as a Tester</h2>
+          <p class="form-intro">
+            Fill out the form below and I will add you to the Google Play
+            closed test and send you the join link.
+          </p>
+
+          <form id="signup-form" action="FORM_ACTION_URL_HERE" method="POST" novalidate>
+
+            <div class="field-group">
+              <label for="full-name">Full Name <span class="required" aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="full-name"
+                name="full_name"
+                placeholder="Your full name"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="gmail">Gmail Address (used for Google Play) <span class="required" aria-hidden="true">*</span></label>
+              <input
+                type="email"
+                id="gmail"
+                name="gmail"
+                placeholder="yourname@gmail.com"
+                autocomplete="email"
+                required
+              />
+              <span class="field-hint">This must be the Gmail connected to your Google Play account.</span>
+            </div>
+
+            <div class="field-group">
+              <label for="whatsapp">WhatsApp Number <span class="required" aria-hidden="true">*</span></label>
+              <input
+                type="tel"
+                id="whatsapp"
+                name="whatsapp"
+                placeholder="+972 50 000 0000"
+                autocomplete="tel"
+                required
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="phone-model">Android Phone Model <span class="required" aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="phone-model"
+                name="phone_model"
+                placeholder="e.g. Samsung Galaxy S23, Pixel 7"
+                required
+              />
+            </div>
+
+            <div class="checkboxes">
+              <label class="checkbox-label">
+                <input type="checkbox" name="has_android" value="yes" required />
+                <span class="checkmark" aria-hidden="true"></span>
+                <span>I have an Android phone.</span>
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="commit_14_days" value="yes" required />
+                <span class="checkmark" aria-hidden="true"></span>
+                <span>I understand I need to keep the app installed for <strong>14 full days.</strong></span>
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="no_uninstall" value="yes" required />
+                <span class="checkmark" aria-hidden="true"></span>
+                <span>I will not uninstall or opt out unless I speak to Zev first.</span>
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" name="contact_consent" value="yes" required />
+                <span class="checkmark" aria-hidden="true"></span>
+                <span>I agree to be contacted about this test.</span>
+              </label>
+            </div>
+
+            <div id="form-error" class="form-error hidden" role="alert">
+              Please fill in all required fields and check all boxes before submitting.
+            </div>
+
+            <button type="submit" class="btn-submit" id="submit-btn">
+              Sign Up as a Tester
+            </button>
+
+          </form>
+
+          <!-- Success state -->
+          <div id="success-message" class="success-message hidden" role="status">
+            <div class="success-icon" aria-hidden="true">✓</div>
+            <h3>Thank you.</h3>
+            <p>
+              I will add your Gmail to the Google Play closed test and send
+              you the join link. Keep an eye on your WhatsApp and email.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FAQ ──────────────────────────────────────────────────────────── -->
+    <section class="section" id="faq">
+      <div class="container">
+        <h2>Questions</h2>
+        <dl class="faq-list">
+
+          <div class="faq-item">
+            <dt>Do I need an Android phone?</dt>
+            <dd>Yes. This is only for Google Play testing.</dd>
+          </div>
+
+          <div class="faq-item">
+            <dt>Can I use an iPhone?</dt>
+            <dd>No. iPhone users cannot test this Google Play version.</dd>
+          </div>
+
+          <div class="faq-item">
+            <dt>Do I need to pay?</dt>
+            <dd>
+              Maybe. The app may be free or may cost around ₪1 depending on
+              the test setup. I will let you know before you install.
+            </dd>
+          </div>
+
+          <div class="faq-item">
+            <dt>What do I actually have to do?</dt>
+            <dd>
+              Join the test, install the app, keep it installed for 14 days,
+              and open it a few times if asked.
+            </dd>
+          </div>
+
+          <div class="faq-item">
+            <dt>Can I uninstall it after the 14 days?</dt>
+            <dd>Yes, after the test period is complete you are free to uninstall.</dd>
+          </div>
+
+          <div class="faq-item">
+            <dt>What happens if I uninstall early?</dt>
+            <dd>
+              It may delay the app launch, so please do not sign up unless
+              you can genuinely commit.
+            </dd>
+          </div>
+
+        </dl>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <p>Thank you for helping make this app launch possible.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
