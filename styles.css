@@ -703,3 +703,319 @@ input[type="tel"].invalid {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MYSTICAL TZFAT THEME — deep blues, candlelight, starry Galilee sky
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Keyframes ───────────────────────────────────────────────────────────── */
+@keyframes twinkle-a {
+  0%   { opacity: 0.30; }
+  40%  { opacity: 0.08; }
+  70%  { opacity: 0.28; }
+  100% { opacity: 0.12; }
+}
+
+@keyframes twinkle-b {
+  0%   { opacity: 0.12; }
+  35%  { opacity: 0.32; }
+  65%  { opacity: 0.06; }
+  100% { opacity: 0.24; }
+}
+
+@keyframes gold-pulse {
+  0%   { box-shadow: 0 0 6px  rgba(210,155,20,0.25), 0 2px 10px rgba(37,99,235,0.40); }
+  50%  { box-shadow: 0 0 22px rgba(210,155,20,0.60), 0 4px 18px rgba(37,99,235,0.55); }
+  100% { box-shadow: 0 0 6px  rgba(210,155,20,0.25), 0 2px 10px rgba(37,99,235,0.40); }
+}
+
+/* ─── Page background — fixed gradient + candlelight glow ─────────────────── */
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(ellipse 75% 45% at 50% 28%, rgba(175,130,18,0.10) 0%, transparent 62%),
+    linear-gradient(168deg,
+      #0a0a2e 0%,
+      #110826 18%,
+      #1a0a3e 50%,
+      #1c0d30 70%,
+      #2a1500 100%);
+  background-attachment: fixed;
+}
+
+/* ─── Star layers ─────────────────────────────────────────────────────────── */
+.cosmic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Layer A — brighter stars, upper sky */
+.cosmic-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at  3%  6%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(1px   1px   at  9%  2%, rgba(255,255,255,0.70) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 16% 12%, rgba(255,255,255,0.90) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 23%  5%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 31% 18%, rgba(255,255,255,0.80) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 38%  8%, rgba(255,255,255,0.75) 0%, transparent 100%),
+    radial-gradient(2px   2px   at 45% 22%, rgba(255,255,255,0.90) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 52%  3%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 59% 15%, rgba(255,255,255,0.80) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 67% 28%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 74%  7%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 81% 20%, rgba(255,255,255,0.70) 0%, transparent 100%),
+    radial-gradient(2px   2px   at 88% 10%, rgba(255,255,255,0.90) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 95% 25%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at  6% 35%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 14% 42%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 27% 38%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 36% 48%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 48% 33%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 57% 44%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 69% 37%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 79% 50%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 91% 40%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 11% 58%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 25% 62%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 42% 55%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 60% 68%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 76% 60%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 84% 72%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 97% 58%, rgba(255,255,255,0.35) 0%, transparent 100%);
+  animation: twinkle-a 8s ease-in-out infinite;
+}
+
+/* Layer B — second set of stars, offset timing */
+.cosmic-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px   1px   at  5% 14%, rgba(255,255,255,0.70) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 12%  8%, rgba(255,255,255,0.90) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 19% 20%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(2px   2px   at 26%  2%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 33% 25%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 41% 14%, rgba(255,255,255,0.75) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 49% 28%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 56%  7%, rgba(255,255,255,0.80) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 63% 21%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(2px   2px   at 71% 13%, rgba(255,255,255,0.90) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 78% 30%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85%  5%, rgba(255,255,255,0.80) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 93% 18%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(1px   1px   at  7% 48%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 20% 44%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 34% 52%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 44% 40%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 53% 56%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 62% 45%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 73% 58%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 82% 46%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 90% 54%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px   1px   at  3% 65%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 17% 72%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 30% 78%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 47% 74%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 64% 80%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 80% 70%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 88% 78%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 96% 65%, rgba(255,255,255,0.30) 0%, transparent 100%);
+  animation: twinkle-b 13s ease-in-out infinite;
+}
+
+/* ─── Override CSS variables for dark theme ───────────────────────────────── */
+:root {
+  --color-bg:        transparent;
+  --color-surface:   rgba(15, 8, 40, 0.68);
+  --color-text:      #f5f0e8;
+  --color-muted:     #c8bfad;
+  --color-faint:     rgba(245, 240, 232, 0.45);
+  --color-border:    rgba(255, 255, 255, 0.11);
+  --color-notice-bg: rgba(42, 21, 0, 0.60);
+  --color-notice-br: rgba(210, 155, 20, 0.35);
+  --color-error:     #f87171;
+  --color-error-bg:  rgba(220, 38, 38, 0.18);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.25);
+  --shadow-md: 0 4px 28px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.35);
+}
+
+/* ─── Body — transparent so gradient shows through ────────────────────────── */
+body {
+  background: transparent;
+  color: var(--color-text);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Hero ────────────────────────────────────────────────────────────────── */
+.hero {
+  background: transparent;
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+
+.badge {
+  background: rgba(37,99,235,0.20);
+  border-color: rgba(147,197,253,0.30);
+  color: #93c5fd;
+}
+
+/* ─── Sections ────────────────────────────────────────────────────────────── */
+.section {
+  background: transparent;
+}
+
+.section + .section {
+  border-top-color: rgba(255,255,255,0.07);
+}
+
+.section-form {
+  background: transparent;
+}
+
+/* ─── Intro blurb ─────────────────────────────────────────────────────────── */
+.intro-text {
+  border-left-color: rgba(210,155,20,0.65);
+  color: var(--color-muted);
+}
+
+/* ─── Notice (commitment warning) ────────────────────────────────────────── */
+.section-notice {
+  background: rgba(42,21,0,0.55);
+  border-color: rgba(210,155,20,0.30);
+}
+
+.notice-emphasis {
+  color: #e8c870;
+}
+
+/* ─── Feedback callout ────────────────────────────────────────────────────── */
+.section-feedback {
+  background: rgba(10,10,46,0.55);
+  border-color: rgba(100,140,230,0.18);
+}
+
+.feedback-headline {
+  color: #f5f0e8;
+}
+
+/* ─── Steps cards ─────────────────────────────────────────────────────────── */
+.steps li {
+  background: rgba(15, 8, 40, 0.60);
+  border-color: rgba(255,255,255,0.09);
+}
+
+/* ─── Form card — glass effect ────────────────────────────────────────────── */
+.form-card {
+  background: rgba(12, 6, 36, 0.78);
+  border-color: rgba(255,255,255,0.10);
+}
+
+@supports (backdrop-filter: blur(12px)) {
+  .form-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* ─── Inputs ──────────────────────────────────────────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.16);
+  color: #f5f0e8;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder {
+  color: rgba(245,240,232,0.32);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus {
+  border-color: rgba(210,155,20,0.65);
+  box-shadow: 0 0 0 3px rgba(210,155,20,0.12);
+}
+
+input[type="text"].invalid,
+input[type="email"].invalid,
+input[type="tel"].invalid {
+  border-color: rgba(248,113,113,0.70);
+}
+
+/* ─── Checkboxes ──────────────────────────────────────────────────────────── */
+.checkboxes {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.08);
+}
+
+.checkmark {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.checkbox-label input[type="checkbox"].invalid + .checkmark {
+  border-color: rgba(248,113,113,0.70);
+}
+
+/* ─── Form error ──────────────────────────────────────────────────────────── */
+.form-error {
+  background: rgba(220,38,38,0.18);
+  border-color: rgba(248,113,113,0.30);
+  color: #fca5a5;
+}
+
+/* ─── Buttons — gold glow pulse ───────────────────────────────────────────── */
+.btn-primary,
+.btn-submit {
+  border: 1.5px solid rgba(210,155,20,0.50);
+  animation: gold-pulse 3.5s ease-in-out infinite;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible,
+.btn-submit:hover,
+.btn-submit:focus-visible {
+  animation: none;
+  box-shadow: 0 0 28px rgba(210,155,20,0.70), 0 4px 18px rgba(37,99,235,0.55);
+}
+
+.btn-submit:disabled {
+  animation: none;
+}
+
+/* ─── FAQ ─────────────────────────────────────────────────────────────────── */
+.faq-item {
+  background: rgba(15, 8, 40, 0.55);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────────────── */
+.footer {
+  border-top-color: rgba(255,255,255,0.07);
+}
+
+.footer p {
+  color: rgba(245,240,232,0.40);
+}
+
+/* ─── Respect reduced-motion preference ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-bg::before,
+  .cosmic-bg::after {
+    animation: none;
+    opacity: 0.20;
+  }
+  .btn-primary,
+  .btn-submit {
+    animation: none;
+  }
+}
