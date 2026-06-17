@@ -1,0 +1,188 @@
+import Foundation
+import Combine
+import UserNotifications
+
+final class DataStore: ObservableObject {
+    static let shared = DataStore()
+
+    @Published var sessions: [CravingSession] = []
+    @Published var categories: [CravingCategory] = []
+    @Published var actionWeights: [UUID: ActionWeight] = [:]
+    @Published var streak: Int = 0
+    @Published var totalMinutesSaved: Int = 0
+
+    private let sessionsKey = "cc_sessions_v2"
+    private let weightsKey  = "cc_weights_v2"
+
+    private init() {
+        loadData()
+        if categories.isEmpty { categories = Self.defaultCategories() }
+        recalculateStreak()
+        recalculateTotals()
+    }
+
+    // MARK: - Smart Sorting
+
+    func sortedActions(for category: CravingCategory) -> [ReplacementAction] {
+        category.actions.sorted { a, b in
+            let sa = actionWeights[a.id]?.score ?? 0
+            let sb = actionWeights[b.id]?.score ?? 0
+            return sa > sb
+        }
+    }
+
+    // MARK: - Session Completion
+
+    func completeSession(_ session: CravingSession, categoryId: UUID, actionId: UUID) {
+        sessions.insert(session, at: 0)
+        updateWeight(actionId: actionId, session: session)
+
+        if let ci = categories.firstIndex(where: { $0.id == categoryId }),
+           let ai = categories[ci].actions.firstIndex(where: { $0.id == actionId }) {
+            categories[ci].actions[ai].useCount += 1
+            if session.wasSuccessful { categories[ci].actions[ai].successCount += 1 }
+        }
+
+        recalculateStreak()
+        recalculateTotals()
+        saveData()
+        scheduleReminderIfNeeded()
+    }
+
+    private func updateWeight(actionId: UUID, session: CravingSession) {
+        var w = actionWeights[actionId] ?? ActionWeight()
+        w.useCount += 1
+        w.totalDrop += Double(session.drop)
+        if session.wasSuccessful { w.successCount += 1 }
+        actionWeights[actionId] = w
+    }
+
+    // MARK: - Streak
+
+    func recalculateStreak() {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        var date = today
+        var count = 0
+
+        let days = Set(sessions.map { cal.startOfDay(for: $0.date) })
+        while days.contains(date) {
+            count += 1
+            guard let prev = cal.date(byAdding: .day, value: -1, to: date) else { break }
+            date = prev
+        }
+        streak = count
+    }
+
+    private func recalculateTotals() {
+        totalMinutesSaved = sessions.reduce(0) { $0 + $1.minutesSaved }
+    }
+
+    // MARK: - Persistence
+
+    private func saveData() {
+        let enc = JSONEncoder()
+        if let d = try? enc.encode(sessions)       { UserDefaults.standard.set(d, forKey: sessionsKey) }
+        if let d = try? enc.encode(actionWeights)  { UserDefaults.standard.set(d, forKey: weightsKey) }
+    }
+
+    private func loadData() {
+        let dec = JSONDecoder()
+        if let d = UserDefaults.standard.data(forKey: sessionsKey),
+           let v = try? dec.decode([CravingSession].self, from: d)     { sessions = v }
+        if let d = UserDefaults.standard.data(forKey: weightsKey),
+           let v = try? dec.decode([UUID: ActionWeight].self, from: d) { actionWeights = v }
+    }
+
+    // MARK: - Notifications
+
+    func scheduleReminderIfNeeded() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+            guard granted else { return }
+            center.removePendingNotificationRequests(withIdentifiers: ["cc_daily_v2"])
+
+            let content = UNMutableNotificationContent()
+            content.title = "Convert a craving."
+            content.body  = "One action. That's all it takes."
+            content.sound = .default
+
+            var comps = DateComponents()
+            comps.hour   = 20
+            comps.minute = 0
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
+            center.add(UNNotificationRequest(identifier: "cc_daily_v2", content: content, trigger: trigger))
+        }
+    }
+
+    // MARK: - Default Data
+
+    static func defaultCategories() -> [CravingCategory] {
+        [
+            CravingCategory(name: "Sugar / Junk Food", emoji: "🍭", actions: [
+                ReplacementAction(name: "Drink a full glass of water",  category: .hydration,   minutesSaved: 5),
+                ReplacementAction(name: "Do 10 jumping jacks",          category: .movement,    minutesSaved: 3),
+                ReplacementAction(name: "Brush your teeth",             category: .sensory,     minutesSaved: 5),
+                ReplacementAction(name: "Eat a piece of fruit",         category: .hydration,   minutesSaved: 5),
+                ReplacementAction(name: "Take 5 deep breaths",          category: .breath,      minutesSaved: 3),
+                ReplacementAction(name: "Chew sugar-free gum",          category: .sensory,     minutesSaved: 5),
+                ReplacementAction(name: "Go for a 5-min walk",          category: .movement,    minutesSaved: 15),
+            ]),
+            CravingCategory(name: "Alcohol", emoji: "🍺", actions: [
+                ReplacementAction(name: "Sparkling water with citrus",   category: .hydration,   minutesSaved: 20),
+                ReplacementAction(name: "Call someone you trust",        category: .social,      minutesSaved: 30),
+                ReplacementAction(name: "Go for a walk outside",         category: .movement,    minutesSaved: 20),
+                ReplacementAction(name: "4-7-8 breathing",               category: .breath,      minutesSaved: 10),
+                ReplacementAction(name: "Write what's on your mind",     category: .creative,    minutesSaved: 15),
+                ReplacementAction(name: "Make herbal tea",               category: .sensory,     minutesSaved: 15),
+            ]),
+            CravingCategory(name: "Nicotine", emoji: "🚬", actions: [
+                ReplacementAction(name: "10 slow deep breaths",          category: .breath,      minutesSaved: 10),
+                ReplacementAction(name: "Cold water, drink slowly",      category: .hydration,   minutesSaved: 5),
+                ReplacementAction(name: "2-min stretch",                 category: .movement,    minutesSaved: 5),
+                ReplacementAction(name: "Chew gum or a toothpick",       category: .sensory,     minutesSaved: 10),
+                ReplacementAction(name: "Step outside, fresh air",       category: .breath,      minutesSaved: 5),
+                ReplacementAction(name: "Hold an ice cube",              category: .sensory,     minutesSaved: 3),
+            ]),
+            CravingCategory(name: "Phone / Social Media", emoji: "📱", actions: [
+                ReplacementAction(name: "Phone face-down for 5 min",     category: .mindfulness, minutesSaved: 30),
+                ReplacementAction(name: "Body scan meditation",          category: .mindfulness, minutesSaved: 10),
+                ReplacementAction(name: "Write 3 things you're grateful for", category: .creative, minutesSaved: 10),
+                ReplacementAction(name: "Do 10 push-ups",                category: .movement,    minutesSaved: 5),
+                ReplacementAction(name: "Read one page of a book",       category: .distraction, minutesSaved: 15),
+                ReplacementAction(name: "Tidy one small area",           category: .distraction, minutesSaved: 10),
+            ]),
+            CravingCategory(name: "Stress Eating", emoji: "😤", actions: [
+                ReplacementAction(name: "Box breathing (4-4-4-4)",       category: .breath,      minutesSaved: 10),
+                ReplacementAction(name: "10-min walk",                   category: .movement,    minutesSaved: 20),
+                ReplacementAction(name: "Write down what's stressing you", category: .creative,  minutesSaved: 10),
+                ReplacementAction(name: "Progressive muscle relax",      category: .mindfulness, minutesSaved: 10),
+                ReplacementAction(name: "Text a friend",                 category: .social,      minutesSaved: 15),
+                ReplacementAction(name: "Herbal tea, mindfully",         category: .sensory,     minutesSaved: 10),
+            ]),
+            CravingCategory(name: "Caffeine", emoji: "☕", actions: [
+                ReplacementAction(name: "Large glass of water",          category: .hydration,   minutesSaved: 5),
+                ReplacementAction(name: "Splash cold water on face",     category: .sensory,     minutesSaved: 3),
+                ReplacementAction(name: "10-min brisk walk",             category: .movement,    minutesSaved: 15),
+                ReplacementAction(name: "20 jumping jacks",              category: .movement,    minutesSaved: 5),
+                ReplacementAction(name: "Green tea instead",             category: .sensory,     minutesSaved: 10),
+                ReplacementAction(name: "5 energizing deep breaths",     category: .breath,      minutesSaved: 5),
+            ]),
+            CravingCategory(name: "Gambling", emoji: "🎰", actions: [
+                ReplacementAction(name: "Call your support person",      category: .social,      minutesSaved: 60),
+                ReplacementAction(name: "Run or fast walk",              category: .movement,    minutesSaved: 30),
+                ReplacementAction(name: "Write your reasons to stop",    category: .creative,    minutesSaved: 15),
+                ReplacementAction(name: "10-min guided meditation",      category: .mindfulness, minutesSaved: 20),
+                ReplacementAction(name: "Mobile puzzle game",            category: .distraction, minutesSaved: 20),
+            ]),
+            CravingCategory(name: "Something else", emoji: "✏️", actions: [
+                ReplacementAction(name: "Take 5 deep breaths",           category: .breath,      minutesSaved: 5),
+                ReplacementAction(name: "Drink a glass of water",        category: .hydration,   minutesSaved: 5),
+                ReplacementAction(name: "Go for a short walk",           category: .movement,    minutesSaved: 10),
+                ReplacementAction(name: "Quick stretch",                 category: .movement,    minutesSaved: 5),
+                ReplacementAction(name: "Write it down",                 category: .creative,    minutesSaved: 10),
+                ReplacementAction(name: "Sit with it for 60 seconds",    category: .mindfulness, minutesSaved: 5),
+            ]),
+        ]
+    }
+}
