@@ -236,6 +236,19 @@ strong {
   color: var(--color-text);
 }
 
+/* ─── Intro ───────────────────────────────────────────────────────────────── */
+.section-intro {
+  padding: 2rem 0;
+}
+
+.intro-text {
+  font-size: 1.0625rem;
+  color: var(--color-muted);
+  line-height: 1.8;
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1.25rem;
+}
+
 /* ─── Notice Card ─────────────────────────────────────────────────────────── */
 .section-notice {
   background: var(--color-notice-bg);
