@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var dataStore: DataStore
+    @EnvironmentObject var audioPlayer: AudioPlayer
     @Binding var showSession: Bool
     @State private var tab: Int = 0
 
@@ -19,6 +20,7 @@ struct HomeView: View {
                     header
                         .padding(.horizontal, CC.l)
                         .padding(.top, CC.l)
+                        .overlay(alignment: .topTrailing) { musicButton }
 
                     Spacer().frame(height: CC.xl)
 
@@ -174,5 +176,24 @@ struct HomeView: View {
         }
         .padding(CC.xxl)
         .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Music Button
+
+    private var musicButton: some View {
+        Button { withAnimation(CC.snap) { audioPlayer.toggle() } } label: {
+            ZStack {
+                Circle()
+                    .fill(CC.card)
+                    .frame(width: 38, height: 38)
+                    .overlay(Circle().stroke(audioPlayer.isPlaying ? CC.green.opacity(0.3) : CC.border, lineWidth: 1))
+
+                Image(systemName: audioPlayer.isPlaying ? "pause.fill" : "music.note")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(audioPlayer.isPlaying ? CC.green : CC.textTertiary)
+                    .animation(CC.snap, value: audioPlayer.isPlaying)
+            }
+        }
+        .glow(CC.green, radius: audioPlayer.isPlaying ? 10 : 0)
     }
 }
