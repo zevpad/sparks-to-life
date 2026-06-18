@@ -44,6 +44,10 @@ struct SessionFlowView: View {
             IntensityStepView(vm: vm, isAfter: false)
                 .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
                                         removal:   .move(edge: .leading).combined(with: .opacity)))
+        case .deeperNeed:
+            DeeperNeedView(vm: vm)
+                .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
+                                        removal:   .move(edge: .leading).combined(with: .opacity)))
         case .action:
             ActionPickerView(vm: vm)
                 .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity),
@@ -64,7 +68,7 @@ struct SessionFlowView: View {
     }
 
     private var progressDots: some View {
-        let steps: [FlowStep] = [.craving, .intensity, .action, .timer, .recheck, .win]
+        let steps: [FlowStep] = [.craving, .intensity, .deeperNeed, .action, .timer, .recheck, .win]
         let idx = steps.firstIndex(of: vm.currentStep) ?? 0
         return HStack(spacing: 5) {
             ForEach(0..<steps.count, id: \.self) { i in
@@ -83,7 +87,8 @@ struct SessionFlowView: View {
                 case .craving:     isPresented = false
                 case .customInput: vm.currentStep = .craving
                 case .intensity:   vm.currentStep = (vm.selectedCategory?.name == "Something else") ? .customInput : .craving
-                case .action:      vm.currentStep = .intensity
+                case .deeperNeed:  vm.currentStep = .intensity
+                case .action:      vm.currentStep = .deeperNeed
                 case .timer:       vm.cancelTimer(); vm.currentStep = .action
                 case .recheck:     vm.currentStep = .timer
                 case .win:         break
@@ -542,6 +547,131 @@ struct ActionPickerView: View {
     }
 }
 
+// MARK: - Deeper Need
+
+struct DeeperNeedView: View {
+    @ObservedObject var vm: SessionViewModel
+    @State private var revealedNeed: String? = nil
+    @State private var breatheScale: CGFloat = 1.0
+
+    private let needs: [(label: String, sub: String)] = [
+        ("ENERGY",     "I choose strength."),
+        ("COMFORT",    "I choose peace."),
+        ("REWARD",     "I choose what builds me."),
+        ("REST",       "I choose stillness."),
+        ("RELIEF",     "I choose release."),
+        ("CLARITY",    "I choose presence."),
+        ("CONNECTION", "I choose to reach out."),
+        ("PEACE",      "I choose calm."),
+    ]
+
+    var body: some View {
+        ZStack {
+            CC.bg.ignoresSafeArea()
+            if let need = revealedNeed {
+                conversionMoment(need: need)
+                    .transition(.opacity)
+            } else {
+                needGrid
+                    .transition(.opacity)
+            }
+        }
+        .animation(CC.smooth, value: revealedNeed)
+    }
+
+    private var needGrid: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: CC.xl) {
+                PageHeader("What do you\nreally need?",
+                           subtitle: "The craving is a signal. What's it pointing to?")
+                    .padding(.horizontal, CC.l)
+                    .padding(.top, CC.m)
+
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: CC.m),
+                                    GridItem(.flexible(), spacing: CC.m)], spacing: CC.m) {
+                    ForEach(needs, id: \.label) { need in
+                        Button {
+                            withAnimation(CC.smooth) { revealedNeed = need.label }
+                        } label: {
+                            VStack(spacing: 6) {
+                                Text("I CRAVE")
+                                    .font(.system(size: 10, weight: .black))
+                                    .kerning(2)
+                                    .foregroundColor(CC.textTertiary)
+                                Text(need.label)
+                                    .font(.system(size: 18, weight: .black))
+                                    .kerning(-0.5)
+                                    .foregroundColor(CC.textPrimary)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 88)
+                            .background(CC.card)
+                            .cornerRadius(CC.rL)
+                            .overlay(RoundedRectangle(cornerRadius: CC.rL)
+                                .stroke(CC.border, lineWidth: 1))
+                        }
+                    }
+                }
+                .padding(.horizontal, CC.l)
+
+                Spacer().frame(height: CC.xxl)
+            }
+        }
+    }
+
+    private func conversionMoment(need: String) -> some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            VStack(spacing: CC.m) {
+                Text("I CRAVE")
+                    .font(.system(size: 16, weight: .black))
+                    .kerning(5)
+                    .foregroundColor(CC.textTertiary)
+
+                Text(need)
+                    .font(.system(size: 64, weight: .black))
+                    .kerning(-2)
+                    .foregroundColor(CC.green)
+                    .glow(CC.green, radius: 28)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, CC.l)
+                    .scaleEffect(breatheScale)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) {
+                            breatheScale = 1.05
+                        }
+                    }
+
+                Text(needs.first(where: { $0.label == need })?.sub ?? "")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(CC.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, CC.xs)
+            }
+
+            Spacer()
+
+            VStack(spacing: CC.xl) {
+                Text("EVERY CRAVING IS ENERGY.\nI CHOOSE ITS DIRECTION.")
+                    .font(.system(size: 12, weight: .black))
+                    .kerning(1.5)
+                    .foregroundColor(CC.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, CC.xl)
+
+                PrimaryButton(title: "Choose an action →", color: CC.green) {
+                    vm.selectNeed(need)
+                }
+                .padding(.horizontal, CC.l)
+                .padding(.bottom, CC.xxl)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
 // MARK: - Timer
 
 struct TimerView: View {
@@ -557,19 +687,34 @@ struct TimerView: View {
 
     var body: some View {
         VStack(spacing: CC.xl) {
-            if let action = vm.selectedAction {
-                VStack(spacing: CC.s) {
+            VStack(spacing: CC.s) {
+                if !vm.selectedNeed.isEmpty {
+                    VStack(spacing: 4) {
+                        Text("I CRAVE")
+                            .font(.system(size: 11, weight: .black))
+                            .kerning(3)
+                            .foregroundColor(CC.textTertiary)
+                        Text(vm.selectedNeed)
+                            .font(.system(size: 30, weight: .black))
+                            .kerning(-1)
+                            .foregroundColor(CC.green)
+                            .glow(CC.green, radius: 12)
+                    }
+                    .padding(.top, CC.m)
+                } else {
                     Text("Do it now.")
                         .font(.system(size: 34, weight: .black))
                         .kerning(-1)
                         .foregroundColor(CC.textPrimary)
+                        .padding(.top, CC.m)
+                }
+                if let action = vm.selectedAction {
                     Text(action.name)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(CC.textSecondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, CC.l)
                 }
-                .padding(.top, CC.m)
             }
 
             // Ring
@@ -662,6 +807,14 @@ struct WinView: View {
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(CC.textSecondary)
                             .multilineTextAlignment(.center)
+
+                        if let identity = identityStatement(for: vm.selectedAction) {
+                            Text(identity)
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(CC.green)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, CC.xs)
+                        }
                     }
                     .padding(.horizontal, CC.l)
                     .padding(.top, CC.xl)
@@ -721,6 +874,20 @@ struct WinView: View {
                 try? await Task.sleep(nanoseconds: 3_000_000_000)
                 await MainActor.run { showConfetti = false }
             }
+        }
+    }
+
+    private func identityStatement(for action: ReplacementAction?) -> String? {
+        guard let action else { return nil }
+        switch action.category {
+        case .movement:    return "I am becoming stronger."
+        case .breath:      return "I am becoming calmer."
+        case .mindfulness: return "I am becoming more present."
+        case .social:      return "I am becoming more connected."
+        case .hydration:   return "I am becoming healthier."
+        case .creative:    return "I am becoming more expressive."
+        case .distraction: return "I am reclaiming my focus."
+        case .sensory:     return "I am becoming more aware."
         }
     }
 

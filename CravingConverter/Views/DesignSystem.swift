@@ -194,6 +194,8 @@ struct StatCard: View {
                 .font(.system(size: 26, weight: .black))
                 .kerning(-0.5)
                 .foregroundColor(color)
+                .minimumScaleFactor(0.55)
+                .lineLimit(1)
             Text(label)
                 .font(.system(size: 10, weight: .bold))
                 .kerning(0.3)
@@ -449,5 +451,48 @@ struct StreakBanner: View {
         streak >= 30 ? "One month of showing up. Real." :
         streak >= 7  ? "A week straight. That's discipline." :
                        "Don't break it."
+    }
+}
+
+// MARK: - Momentum Banner
+
+struct MomentumBanner: View {
+    let momentum: String
+    let converted: Int
+
+    var body: some View {
+        HStack(spacing: CC.m) {
+            Text(emoji).font(.system(size: 26))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.system(size: 15, weight: .black)).foregroundColor(.white)
+                Text(subtitle).font(.system(size: 13, weight: .medium)).foregroundColor(CC.green.opacity(0.7))
+            }
+            Spacer()
+        }
+        .padding(CC.m)
+        .background(CC.green.opacity(0.08))
+        .cornerRadius(CC.rM)
+        .overlay(RoundedRectangle(cornerRadius: CC.rM).stroke(CC.green.opacity(0.25), lineWidth: 1))
+        .glow(CC.green, radius: 6)
+    }
+
+    private var emoji: String {
+        switch momentum {
+        case "STRONG": return "🔥"
+        case "RISING": return "⚡"
+        default:       return "✨"
+        }
+    }
+
+    private var title: String {
+        switch momentum {
+        case "STRONG": return "Strong momentum. Keep building."
+        case "RISING": return "Rising. You're in it."
+        default:       return "Steady. One more today."
+        }
+    }
+
+    private var subtitle: String {
+        "\(converted) cravings converted. Every craving is energy."
     }
 }

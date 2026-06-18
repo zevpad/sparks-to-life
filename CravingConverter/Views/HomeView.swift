@@ -32,9 +32,9 @@ struct HomeView: View {
                     statsRow
                         .padding(.horizontal, CC.l)
 
-                    if dataStore.streak >= 3 {
+                    if dataStore.momentum != "BEGIN" {
                         Spacer().frame(height: CC.m)
-                        StreakBanner(streak: dataStore.streak)
+                        MomentumBanner(momentum: dataStore.momentum, converted: dataStore.sessions.count)
                             .padding(.horizontal, CC.l)
                     }
 
@@ -89,9 +89,9 @@ struct HomeView: View {
 
     private var statsRow: some View {
         HStack(spacing: CC.s) {
-            StatCard(value: "\(dataStore.streak)",            label: "DAY\nSTREAK",    color: CC.purple)
-            StatCard(value: "\(dataStore.sessions.count)",   label: "CONVERTED",      color: CC.green)
-            StatCard(value: "\(dataStore.totalMinutesSaved)",label: "MINS\nSAVED",     color: CC.orange)
+            StatCard(value: dataStore.momentum,               label: "MOMENTUM",       color: CC.purple)
+            StatCard(value: "\(dataStore.sessions.count)",    label: "CONVERTED",      color: CC.green)
+            StatCard(value: "\(dataStore.totalMinutesSaved)", label: "MINS\nSAVED",    color: CC.orange)
         }
     }
 

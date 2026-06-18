@@ -6,6 +6,7 @@ enum FlowStep: Equatable {
     case craving
     case customInput
     case intensity
+    case deeperNeed
     case action
     case timer
     case recheck
@@ -19,6 +20,7 @@ final class SessionViewModel: ObservableObject {
     @Published var selectedCategory: CravingCategory?
     @Published var customCravingText: String = ""
     @Published var selectedAction: ReplacementAction?
+    @Published var selectedNeed: String = ""
 
     // Intensity
     @Published var intensityBefore: Int = 0
@@ -54,6 +56,11 @@ final class SessionViewModel: ObservableObject {
 
     func selectIntensityBefore(_ value: Int) {
         intensityBefore = value
+        currentStep = .deeperNeed
+    }
+
+    func selectNeed(_ need: String) {
+        selectedNeed = need
         currentStep = .action
     }
 

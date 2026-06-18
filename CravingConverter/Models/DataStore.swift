@@ -93,6 +93,20 @@ final class DataStore: ObservableObject {
         totalMinutesSaved = sessions.reduce(0) { $0 + $1.minutesSaved }
     }
 
+    var momentum: String {
+        let cal = Calendar.current
+        let cutoff = cal.date(byAdding: .day, value: -7, to: Date())!
+        let recent = sessions.filter { $0.date > cutoff }.count
+        switch recent {
+        case 8...: return "STRONG"
+        case 4...: return "RISING"
+        case 1...: return "STEADY"
+        default:   return "BEGIN"
+        }
+    }
+
+    var hoursReclaimed: Int { totalMinutesSaved / 60 }
+
     // MARK: - Persistence
 
     // MARK: - Custom Categories
@@ -258,6 +272,39 @@ final class DataStore: ObservableObject {
                 ReplacementAction(name: "Sacred geometry focus",          category: .mindfulness, minutesSaved: 10),
                 ReplacementAction(name: "Breath of light visualization",  category: .breath,      minutesSaved: 5),
                 ReplacementAction(name: "Body of light meditation",       category: .mindfulness, minutesSaved: 8),
+            ]),
+            CravingCategory(name: "Emotional Escape", emoji: "💭", actions: [
+                ReplacementAction(name: "Name the emotion out loud",           category: .mindfulness, minutesSaved: 3),
+                ReplacementAction(name: "Write what you're feeling",           category: .creative,    minutesSaved: 10),
+                ReplacementAction(name: "Box breathing (4-4-4-4)",             category: .breath,      minutesSaved: 5),
+                ReplacementAction(name: "Call someone you trust",              category: .social,      minutesSaved: 20),
+                ReplacementAction(name: "10-min walk outside",                 category: .movement,    minutesSaved: 15),
+                ReplacementAction(name: "Body scan meditation",                category: .mindfulness, minutesSaved: 8),
+                ReplacementAction(name: "Cold water on your face",             category: .sensory,     minutesSaved: 2),
+            ]),
+            CravingCategory(name: "Dopamine Seeking", emoji: "📲", actions: [
+                ReplacementAction(name: "Phone face-down for 10 min",          category: .mindfulness, minutesSaved: 30),
+                ReplacementAction(name: "Write 3 things going well",           category: .creative,    minutesSaved: 5),
+                ReplacementAction(name: "Do 20 jumping jacks",                 category: .movement,    minutesSaved: 5),
+                ReplacementAction(name: "Drink water, breathe slowly",         category: .hydration,   minutesSaved: 3),
+                ReplacementAction(name: "Read one page of a book",             category: .distraction, minutesSaved: 10),
+                ReplacementAction(name: "5-min guided breathing",              category: .breath,      minutesSaved: 5),
+            ]),
+            CravingCategory(name: "Procrastination", emoji: "⏳", actions: [
+                ReplacementAction(name: "2-min rule: start anything now",      category: .distraction, minutesSaved: 5),
+                ReplacementAction(name: "Write the single next step",          category: .creative,    minutesSaved: 3),
+                ReplacementAction(name: "Set a 25-min focus timer",            category: .mindfulness, minutesSaved: 25),
+                ReplacementAction(name: "5 deep breaths, then begin",          category: .breath,      minutesSaved: 3),
+                ReplacementAction(name: "Clear your workspace",                category: .distraction, minutesSaved: 5),
+                ReplacementAction(name: "Say out loud: 'I do hard things'",   category: .mindfulness, minutesSaved: 1),
+            ]),
+            CravingCategory(name: "Seeking Validation", emoji: "🫂", actions: [
+                ReplacementAction(name: "Write 3 things you value in yourself", category: .creative,    minutesSaved: 5),
+                ReplacementAction(name: "Do something creative, just for you",  category: .creative,    minutesSaved: 15),
+                ReplacementAction(name: "5 deep breaths, hand on heart",        category: .breath,      minutesSaved: 3),
+                ReplacementAction(name: "Call someone you genuinely care about", category: .social,     minutesSaved: 15),
+                ReplacementAction(name: "Walk outside without your phone",       category: .movement,   minutesSaved: 10),
+                ReplacementAction(name: "Body scan: feel your own presence",     category: .mindfulness, minutesSaved: 5),
             ]),
         ]
     }
