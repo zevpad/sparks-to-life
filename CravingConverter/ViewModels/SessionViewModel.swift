@@ -124,6 +124,14 @@ final class SessionViewModel: ObservableObject {
 
     func fetchGoalImage() {
         guard let category = selectedCategory, let action = selectedAction else { return }
+
+        // Use bundled asset — no network call needed
+        if action.localImageName != nil {
+            isLoadingImage = false
+            goalImageURL   = nil
+            return
+        }
+
         isLoadingImage = true
 
         Task {

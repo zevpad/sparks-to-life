@@ -726,7 +726,15 @@ struct WinView: View {
 
     @ViewBuilder
     private var goalImage: some View {
-        if vm.isLoadingImage {
+        if let assetName = vm.selectedAction?.localImageName {
+            Image(assetName)
+                .resizable()
+                .scaledToFill()
+                .frame(height: 260)
+                .clipShape(RoundedRectangle(cornerRadius: CC.rL))
+                .overlay(RoundedRectangle(cornerRadius: CC.rL).stroke(CC.green.opacity(0.3), lineWidth: 1))
+                .glow(CC.green, radius: 8)
+        } else if vm.isLoadingImage {
             ZStack {
                 RoundedRectangle(cornerRadius: CC.rL).fill(CC.card).frame(height: 200)
                 VStack(spacing: CC.m) {

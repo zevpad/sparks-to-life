@@ -237,6 +237,13 @@ final class DataStore: ObservableObject {
                 ReplacementAction(name: "Write it down",                 category: .creative,    minutesSaved: 10),
                 ReplacementAction(name: "Sit with it for 60 seconds",    category: .mindfulness, minutesSaved: 5),
             ]),
+            CravingCategory(name: "Visualization Aids", emoji: "🌟", actions: [
+                ReplacementAction(name: "Tree of Life meditation",        category: .mindfulness, minutesSaved: 10, localImageName: "viz_tree_of_life"),
+                ReplacementAction(name: "Visualize your ideal self",      category: .mindfulness, minutesSaved: 5),
+                ReplacementAction(name: "Sacred geometry focus",          category: .mindfulness, minutesSaved: 10),
+                ReplacementAction(name: "Breath of light visualization",  category: .breath,      minutesSaved: 5),
+                ReplacementAction(name: "Body of light meditation",       category: .mindfulness, minutesSaved: 8),
+            ]),
         ]
     }
 }
