@@ -103,6 +103,11 @@ struct CravingPickerView: View {
     @EnvironmentObject var dataStore: DataStore
     @ObservedObject var vm: SessionViewModel
 
+    @State private var showAddCraving = false
+    @State private var newName  = ""
+    @State private var newEmoji = ""
+    @FocusState private var nameFocused: Bool
+
     let cols = [GridItem(.flexible(), spacing: CC.m), GridItem(.flexible(), spacing: CC.m)]
 
     var body: some View {
@@ -115,39 +120,152 @@ struct CravingPickerView: View {
                 LazyVGrid(columns: cols, spacing: CC.m) {
                     ForEach(dataStore.categories) { cat in
                         cravingCell(cat)
+                            .contextMenu {
+                                if cat.isCustom {
+                                    Button(role: .destructive) {
+                                        withAnimation(CC.smooth) {
+                                            dataStore.deleteCustomCategory(cat.id)
+                                        }
+                                    } label: {
+                                        Label("Delete craving", systemImage: "trash")
+                                    }
+                                }
+                            }
                     }
                 }
                 .padding(.horizontal, CC.l)
+
+                addCravingSection
+                    .padding(.horizontal, CC.l)
 
                 Spacer().frame(height: CC.xxl)
             }
         }
     }
 
+    // MARK: - Add Craving Section
+
+    @ViewBuilder
+    private var addCravingSection: some View {
+        if showAddCraving {
+            VStack(spacing: CC.m) {
+                HStack(spacing: CC.s) {
+                    // Emoji input
+                    TextField("✨", text: Binding(get: { newEmoji }, set: { newEmoji = $0 }))
+                        .font(.system(size: 26))
+                        .multilineTextAlignment(.center)
+                        .frame(width: 54, height: 54)
+                        .background(CC.cardElevated)
+                        .cornerRadius(CC.s)
+                        .onChange(of: newEmoji) { _, v in
+                            if v.count > 2 { newEmoji = String(v.suffix(1)) }
+                        }
+
+                    // Name input
+                    TextField("Name this craving…",
+                              text: Binding(get: { newName }, set: { newName = $0 }))
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(CC.textPrimary)
+                        .tint(CC.purple)
+                        .focused($nameFocused)
+                        .submitLabel(.done)
+                        .onSubmit { submitNewCraving() }
+                }
+                .padding(CC.m)
+                .background(CC.card)
+                .cornerRadius(CC.rM)
+                .overlay(RoundedRectangle(cornerRadius: CC.rM)
+                    .stroke(CC.purple.opacity(0.5), lineWidth: 1.5))
+
+                HStack(spacing: CC.m) {
+                    GhostButton(title: "Cancel") {
+                        withAnimation(CC.snap) {
+                            showAddCraving = false; newName = ""; newEmoji = ""
+                        }
+                    }
+                    PrimaryButton(
+                        title: "Create",
+                        color: CC.purple,
+                        action: submitNewCraving,
+                        isEnabled: !newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    )
+                }
+            }
+            .transition(.asymmetric(
+                insertion: .move(edge: .bottom).combined(with: .opacity),
+                removal:   .opacity))
+            .onAppear { nameFocused = true }
+        } else {
+            Button {
+                withAnimation(CC.snap) { showAddCraving = true }
+            } label: {
+                HStack(spacing: CC.s) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(CC.purple)
+                    Text("Add a private craving")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(CC.purple)
+                    Spacer()
+                }
+                .padding(CC.m)
+                .background(CC.purple.opacity(0.08))
+                .cornerRadius(CC.rM)
+                .overlay(RoundedRectangle(cornerRadius: CC.rM)
+                    .stroke(CC.purple.opacity(0.2), lineWidth: 1))
+            }
+            .transition(.opacity)
+        }
+    }
+
+    private func submitNewCraving() {
+        let name = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+        dataStore.addCustomCategory(name: name, emoji: newEmoji)
+        withAnimation(CC.snap) { showAddCraving = false; newName = ""; newEmoji = "" }
+    }
+
+    // MARK: - Craving Cell
+
     private func cravingCell(_ cat: CravingCategory) -> some View {
         let on = vm.selectedCategory?.id == cat.id
         return Button {
             withAnimation(CC.snap) { vm.selectCategory(cat) }
         } label: {
-            VStack(spacing: CC.s) {
-                Text(cat.emoji).font(.system(size: 38))
-                Text(cat.name)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(on ? .black : CC.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
+            ZStack(alignment: .topTrailing) {
+                VStack(spacing: CC.s) {
+                    Text(cat.emoji).font(.system(size: 38))
+                    Text(cat.name)
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(on ? .black : CC.textPrimary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 104)
+                .background(on ? CC.green : CC.card)
+                .cornerRadius(CC.rL)
+                .overlay(
+                    RoundedRectangle(cornerRadius: CC.rL)
+                        .stroke(on ? CC.green : (cat.isCustom ? CC.purple.opacity(0.4) : CC.border), lineWidth: 1.5)
+                )
+                .scaleEffect(on ? 1.04 : 1)
+
+                // Private badge on custom categories
+                if cat.isCustom {
+                    Text("private")
+                        .font(.system(size: 9, weight: .black))
+                        .kerning(0.3)
+                        .foregroundColor(on ? .black.opacity(0.6) : CC.purple)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(on ? Color.white.opacity(0.3) : CC.purple.opacity(0.15))
+                        .cornerRadius(4)
+                        .padding(6)
+                }
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 104)
-            .background(on ? CC.green : CC.card)
-            .cornerRadius(CC.rL)
-            .overlay(
-                RoundedRectangle(cornerRadius: CC.rL)
-                    .stroke(on ? CC.green : CC.border, lineWidth: 1.5)
-            )
-            .scaleEffect(on ? 1.04 : 1)
         }
-        .glow(CC.green, radius: on ? 14 : 0)
+        .glow(on ? CC.green : (cat.isCustom ? CC.purple : .clear), radius: on ? 14 : (cat.isCustom ? 4 : 0))
     }
 }
 

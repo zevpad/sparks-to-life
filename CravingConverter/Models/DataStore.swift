@@ -81,6 +81,34 @@ final class DataStore: ObservableObject {
 
     // MARK: - Persistence
 
+    // MARK: - Custom Categories
+
+    func addCustomCategory(name: String, emoji: String) {
+        let cat = CravingCategory(
+            name: name,
+            emoji: emoji.isEmpty ? "✨" : String(emoji.prefix(2)),
+            actions: Self.starterActions(),
+            isCustom: true
+        )
+        categories.append(cat)
+        saveData()
+    }
+
+    func deleteCustomCategory(_ id: UUID) {
+        categories.removeAll { $0.id == id && $0.isCustom }
+        saveData()
+    }
+
+    private static func starterActions() -> [ReplacementAction] {
+        [
+            ReplacementAction(name: "Take 5 deep breaths",    category: .breath,      minutesSaved: 5),
+            ReplacementAction(name: "Drink a glass of water", category: .hydration,   minutesSaved: 5),
+            ReplacementAction(name: "Go for a short walk",    category: .movement,    minutesSaved: 10),
+            ReplacementAction(name: "Write it down",          category: .creative,    minutesSaved: 5),
+            ReplacementAction(name: "Sit with it, 60 sec",    category: .mindfulness, minutesSaved: 3),
+        ]
+    }
+
     // MARK: - Custom Actions
 
     @discardableResult

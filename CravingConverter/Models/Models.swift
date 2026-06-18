@@ -46,6 +46,19 @@ struct ReplacementAction: Identifiable, Codable, Equatable {
         self.successCount = 0
         self.useCount = 0
     }
+
+    // Resilient decode — isCustom defaults to false for data saved before the field existed
+    enum CodingKeys: CodingKey { case id, name, category, minutesSaved, successCount, useCount, isCustom }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id           = try c.decode(UUID.self,           forKey: .id)
+        name         = try c.decode(String.self,         forKey: .name)
+        category     = try c.decode(ActionCategory.self, forKey: .category)
+        minutesSaved = try c.decode(Int.self,            forKey: .minutesSaved)
+        successCount = try c.decode(Int.self,            forKey: .successCount)
+        useCount     = try c.decode(Int.self,            forKey: .useCount)
+        isCustom     = (try? c.decode(Bool.self,         forKey: .isCustom)) ?? false
+    }
 }
 
 // MARK: - Craving Category
@@ -55,12 +68,25 @@ struct CravingCategory: Identifiable, Codable {
     var name: String
     var emoji: String
     var actions: [ReplacementAction]
+    var isCustom: Bool
 
-    init(id: UUID = UUID(), name: String, emoji: String, actions: [ReplacementAction]) {
+    init(id: UUID = UUID(), name: String, emoji: String, actions: [ReplacementAction], isCustom: Bool = false) {
         self.id = id
         self.name = name
         self.emoji = emoji
         self.actions = actions
+        self.isCustom = isCustom
+    }
+
+    // Resilient decode — isCustom defaults to false for built-in categories saved before this field
+    enum CodingKeys: CodingKey { case id, name, emoji, actions, isCustom }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id       = try c.decode(UUID.self,                forKey: .id)
+        name     = try c.decode(String.self,              forKey: .name)
+        emoji    = try c.decode(String.self,              forKey: .emoji)
+        actions  = try c.decode([ReplacementAction].self, forKey: .actions)
+        isCustom = (try? c.decode(Bool.self,              forKey: .isCustom)) ?? false
     }
 }
 
