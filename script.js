@@ -102,6 +102,21 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('change', () => input.classList.remove('invalid'));
   });
 
+  // Copy link button
+  const copyBtn = document.getElementById('copy-link-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText('https://testers.thehonuway.com').then(() => {
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy Link';
+          copyBtn.classList.remove('copied');
+        }, 2500);
+      });
+    });
+  }
+
   // Smooth-scroll hero CTA
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {

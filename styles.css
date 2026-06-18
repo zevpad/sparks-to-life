@@ -660,6 +660,71 @@ input[type="tel"].invalid {
   line-height: 1.65;
 }
 
+/* ─── Share section ───────────────────────────────────────────────────────── */
+.section-share {
+  background: transparent;
+}
+
+.share-card {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.share-headline {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.625rem;
+}
+
+.share-card p {
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.75;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-share {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s ease, transform 0.12s ease;
+}
+
+.btn-share:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #fff;
+}
+
+.btn-copy {
+  background: rgba(255,255,255,0.12);
+  color: var(--color-text);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.btn-copy.copied {
+  background: rgba(34,197,94,0.2);
+  border-color: rgba(34,197,94,0.4);
+  color: #86efac;
+}
+
 /* ─── Footer ──────────────────────────────────────────────────────────────── */
 .footer {
   border-top: 1px solid var(--color-border);
