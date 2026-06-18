@@ -251,6 +251,10 @@ struct ActionPickerView: View {
     @EnvironmentObject var dataStore: DataStore
     @ObservedObject var vm: SessionViewModel
 
+    @State private var showAddCustom = false
+    @State private var customText = ""
+    @FocusState private var customFocused: Bool
+
     private var actions: [ReplacementAction] {
         guard let cat = vm.selectedCategory else { return [] }
         return dataStore.sortedActions(for: cat)
@@ -274,6 +278,8 @@ struct ActionPickerView: View {
                     ForEach(Array(actions.enumerated()), id: \.element.id) { idx, action in
                         actionRow(action, isTop: idx == 0 && (dataStore.actionWeights[action.id]?.useCount ?? 0) > 0)
                     }
+
+                    addCustomSection
                 }
                 .padding(.horizontal, CC.l)
 
@@ -282,12 +288,89 @@ struct ActionPickerView: View {
         }
     }
 
+    // MARK: - Add Custom Section
+
+    @ViewBuilder
+    private var addCustomSection: some View {
+        if showAddCustom {
+            VStack(spacing: CC.s) {
+                HStack(spacing: CC.s) {
+                    TextField("What will you do?",
+                              text: Binding(get: { customText }, set: { customText = $0 }))
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(CC.textPrimary)
+                        .tint(CC.green)
+                        .focused($customFocused)
+                        .submitLabel(.done)
+                        .onSubmit { submitCustom() }
+
+                    let canSubmit = !customText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    Button { submitCustom() } label: {
+                        Text("Add")
+                            .font(.system(size: 14, weight: .black))
+                            .foregroundColor(canSubmit ? .black : CC.textTertiary)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(canSubmit ? CC.green : CC.cardElevated)
+                            .cornerRadius(CC.s)
+                    }
+                    .disabled(!canSubmit)
+                    .glow(CC.green, radius: canSubmit ? 8 : 0)
+                }
+                .padding(CC.m)
+                .background(CC.card)
+                .cornerRadius(CC.rM)
+                .overlay(RoundedRectangle(cornerRadius: CC.rM).stroke(CC.green.opacity(0.4), lineWidth: 1.5))
+
+                Button {
+                    withAnimation(CC.snap) { showAddCustom = false; customText = "" }
+                } label: {
+                    Text("Cancel")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(CC.textTertiary)
+                }
+            }
+            .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity),
+                                    removal:   .opacity))
+            .onAppear { customFocused = true }
+        } else {
+            Button {
+                withAnimation(CC.snap) { showAddCustom = true }
+            } label: {
+                HStack(spacing: CC.s) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(CC.green)
+                    Text("Add your own")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(CC.green)
+                    Spacer()
+                }
+                .padding(CC.m)
+                .background(CC.green.opacity(0.08))
+                .cornerRadius(CC.rM)
+                .overlay(RoundedRectangle(cornerRadius: CC.rM).stroke(CC.green.opacity(0.2), lineWidth: 1))
+            }
+            .transition(.opacity)
+        }
+    }
+
+    private func submitCustom() {
+        let name = customText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty, let catId = vm.selectedCategory?.id else { return }
+        if let action = dataStore.addCustomAction(name: name, to: catId) {
+            withAnimation(CC.snap) { vm.selectAction(action) }
+        }
+    }
+
+    // MARK: - Action Row
+
     private func actionRow(_ action: ReplacementAction, isTop: Bool) -> some View {
         Button {
             withAnimation(CC.snap) { vm.selectAction(action) }
         } label: {
             HStack(spacing: CC.m) {
-                Text(action.category.emoji)
+                Text(action.isCustom ? "✏️" : action.category.emoji)
                     .font(.system(size: 22))
                     .frame(width: 44, height: 44)
                     .background(CC.cardElevated)
@@ -308,8 +391,17 @@ struct ActionPickerView: View {
                                 .background(CC.green.opacity(0.15))
                                 .cornerRadius(4)
                         }
+                        if action.isCustom {
+                            Text("yours")
+                                .font(.system(size: 10, weight: .black))
+                                .foregroundColor(CC.orange)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(CC.orange.opacity(0.15))
+                                .cornerRadius(4)
+                        }
                     }
-                    Text("\(action.minutesSaved) min · \(action.category.rawValue)")
+                    Text("\(action.minutesSaved) min · \(action.isCustom ? "Custom" : action.category.rawValue)")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(CC.textTertiary)
                 }

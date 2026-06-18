@@ -35,12 +35,14 @@ struct ReplacementAction: Identifiable, Codable, Equatable {
     var minutesSaved: Int
     var successCount: Int
     var useCount: Int
+    var isCustom: Bool
 
-    init(id: UUID = UUID(), name: String, category: ActionCategory, minutesSaved: Int = 10) {
+    init(id: UUID = UUID(), name: String, category: ActionCategory, minutesSaved: Int = 10, isCustom: Bool = false) {
         self.id = id
         self.name = name
         self.category = category
         self.minutesSaved = minutesSaved
+        self.isCustom = isCustom
         self.successCount = 0
         self.useCount = 0
     }

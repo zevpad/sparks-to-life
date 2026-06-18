@@ -11,8 +11,9 @@ final class DataStore: ObservableObject {
     @Published var streak: Int = 0
     @Published var totalMinutesSaved: Int = 0
 
-    private let sessionsKey = "cc_sessions_v2"
-    private let weightsKey  = "cc_weights_v2"
+    private let sessionsKey   = "cc_sessions_v2"
+    private let weightsKey    = "cc_weights_v2"
+    private let categoriesKey = "cc_categories_v2"
 
     private init() {
         loadData()
@@ -80,10 +81,33 @@ final class DataStore: ObservableObject {
 
     // MARK: - Persistence
 
+    // MARK: - Custom Actions
+
+    @discardableResult
+    func addCustomAction(name: String, to categoryId: UUID) -> ReplacementAction? {
+        guard let idx = categories.firstIndex(where: { $0.id == categoryId }) else { return nil }
+        let action = ReplacementAction(name: name, category: .distraction, minutesSaved: 5, isCustom: true)
+        categories[idx].actions.append(action)
+        saveData()
+        return action
+    }
+
+    func deleteCustomAction(_ actionId: UUID, from categoryId: UUID) {
+        guard let ci = categories.firstIndex(where: { $0.id == categoryId }),
+              let ai = categories[ci].actions.firstIndex(where: { $0.id == actionId && $0.isCustom })
+        else { return }
+        categories[ci].actions.remove(at: ai)
+        actionWeights.removeValue(forKey: actionId)
+        saveData()
+    }
+
+    // MARK: - Persistence
+
     private func saveData() {
         let enc = JSONEncoder()
         if let d = try? enc.encode(sessions)       { UserDefaults.standard.set(d, forKey: sessionsKey) }
         if let d = try? enc.encode(actionWeights)  { UserDefaults.standard.set(d, forKey: weightsKey) }
+        if let d = try? enc.encode(categories)     { UserDefaults.standard.set(d, forKey: categoriesKey) }
     }
 
     private func loadData() {
@@ -92,6 +116,8 @@ final class DataStore: ObservableObject {
            let v = try? dec.decode([CravingSession].self, from: d)     { sessions = v }
         if let d = UserDefaults.standard.data(forKey: weightsKey),
            let v = try? dec.decode([UUID: ActionWeight].self, from: d) { actionWeights = v }
+        if let d = UserDefaults.standard.data(forKey: categoriesKey),
+           let v = try? dec.decode([CravingCategory].self, from: d)    { categories = v }
     }
 
     // MARK: - Notifications
