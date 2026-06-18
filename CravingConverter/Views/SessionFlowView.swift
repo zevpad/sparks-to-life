@@ -126,14 +126,12 @@ struct CravingPickerView: View {
                     ForEach(dataStore.categories) { cat in
                         cravingCell(cat)
                             .contextMenu {
-                                if cat.isCustom {
-                                    Button(role: .destructive) {
-                                        withAnimation(CC.smooth) {
-                                            dataStore.deleteCustomCategory(cat.id)
-                                        }
-                                    } label: {
-                                        Label("Delete craving", systemImage: "trash")
+                                Button(role: .destructive) {
+                                    withAnimation(CC.smooth) {
+                                        dataStore.deleteCategory(cat.id)
                                     }
+                                } label: {
+                                    Label("Delete \"\(cat.name)\"", systemImage: "trash")
                                 }
                             }
                     }
@@ -542,6 +540,13 @@ struct ActionPickerView: View {
                 RoundedRectangle(cornerRadius: CC.rM)
                     .stroke(isTop ? CC.green.opacity(0.3) : CC.border, lineWidth: 1)
             )
+        }
+        .contextMenu {
+            Button(role: .destructive) {
+                if let catId = vm.selectedCategory?.id {
+                    withAnimation(CC.smooth) { dataStore.deleteAction(action.id, from: catId) }
+                }
+            } label: { Label("Delete action", systemImage: "trash") }
         }
         .glow(CC.green, radius: isTop ? 6 : 0)
     }

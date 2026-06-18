@@ -132,7 +132,13 @@ struct HomeView: View {
                 emptyState(emoji: "🎯", title: "Nothing converted yet today.", sub: "Pause. One small action. That's all it takes.")
             } else {
                 ForEach(todaySessions) { s in
-                    SessionRow(session: s).padding(.horizontal, CC.l)
+                    SessionRow(session: s)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                withAnimation { dataStore.deleteSession(s.id) }
+                            } label: { Label("Delete", systemImage: "trash") }
+                        }
+                        .padding(.horizontal, CC.l)
                 }
 
                 HStack {
@@ -157,7 +163,13 @@ struct HomeView: View {
                 emptyState(emoji: "📋", title: "No history yet.", sub: "Every converted craving will appear here.")
             } else {
                 ForEach(dataStore.sessions.prefix(60)) { s in
-                    SessionRow(session: s).padding(.horizontal, CC.l)
+                    SessionRow(session: s)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                withAnimation { dataStore.deleteSession(s.id) }
+                            } label: { Label("Delete", systemImage: "trash") }
+                        }
+                        .padding(.horizontal, CC.l)
                 }
             }
         }

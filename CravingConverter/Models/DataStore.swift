@@ -127,6 +127,18 @@ final class DataStore: ObservableObject {
         saveData()
     }
 
+    func deleteCategory(_ id: UUID) {
+        categories.removeAll { $0.id == id }
+        saveData()
+    }
+
+    func deleteSession(_ id: UUID) {
+        sessions.removeAll { $0.id == id }
+        recalculateStreak()
+        recalculateTotals()
+        saveData()
+    }
+
     private static func starterActions() -> [ReplacementAction] {
         [
             ReplacementAction(name: "Take 5 deep breaths",    category: .breath,      minutesSaved: 5),
@@ -151,6 +163,15 @@ final class DataStore: ObservableObject {
     func deleteCustomAction(_ actionId: UUID, from categoryId: UUID) {
         guard let ci = categories.firstIndex(where: { $0.id == categoryId }),
               let ai = categories[ci].actions.firstIndex(where: { $0.id == actionId && $0.isCustom })
+        else { return }
+        categories[ci].actions.remove(at: ai)
+        actionWeights.removeValue(forKey: actionId)
+        saveData()
+    }
+
+    func deleteAction(_ actionId: UUID, from categoryId: UUID) {
+        guard let ci = categories.firstIndex(where: { $0.id == categoryId }),
+              let ai = categories[ci].actions.firstIndex(where: { $0.id == actionId })
         else { return }
         categories[ci].actions.remove(at: ai)
         actionWeights.removeValue(forKey: actionId)
