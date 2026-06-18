@@ -251,6 +251,29 @@ strong {
   border-left: 3px solid rgba(210,155,20,0.7);
 }
 
+.app-icons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.app-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+@media (max-width: 479px) {
+  .app-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+}
+
 .app-card-header {
   margin-bottom: 1.25rem;
 }
