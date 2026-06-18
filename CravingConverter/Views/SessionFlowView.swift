@@ -849,6 +849,12 @@ struct WinView: View {
                             .animation(.easeOut(duration: 0.5).delay(0.45), value: ready)
                     }
 
+                    // What helped most?
+                    whatHelpedSection
+                        .padding(.horizontal, CC.l)
+                        .opacity(ready ? 1 : 0)
+                        .animation(.easeOut(duration: 0.4).delay(0.5), value: ready)
+
                     // Done
                     PrimaryButton(title: "Back to home", color: CC.green) {
                         if let session = vm.buildSession() {
@@ -878,6 +884,39 @@ struct WinView: View {
             Task {
                 try? await Task.sleep(nanoseconds: 3_000_000_000)
                 await MainActor.run { showConfetti = false }
+            }
+        }
+    }
+
+    private var whatHelpedSection: some View {
+        let options = ["Movement", "Breathing", "Distraction", "Reflection",
+                       "Time", "Water", "Prayer", "Visualization"]
+        return VStack(alignment: .leading, spacing: CC.s) {
+            Text("WHAT HELPED MOST?")
+                .font(.system(size: 11, weight: .black))
+                .kerning(1.5)
+                .foregroundColor(CC.textTertiary)
+            LazyVGrid(
+                columns: Array(repeating: GridItem(.flexible(), spacing: CC.xs), count: 4),
+                spacing: CC.xs
+            ) {
+                ForEach(options, id: \.self) { opt in
+                    Button {
+                        withAnimation(CC.snap) {
+                            vm.whatHelped = vm.whatHelped == opt ? "" : opt
+                        }
+                    } label: {
+                        Text(opt)
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(vm.whatHelped == opt ? .black : CC.textSecondary)
+                            .padding(.vertical, 7)
+                            .frame(maxWidth: .infinity)
+                            .background(vm.whatHelped == opt ? CC.green : CC.card)
+                            .cornerRadius(CC.s)
+                            .overlay(RoundedRectangle(cornerRadius: CC.s)
+                                .stroke(vm.whatHelped == opt ? CC.green : CC.border, lineWidth: 1))
+                    }
+                }
             }
         }
     }
@@ -943,6 +982,124 @@ struct WinView: View {
                 Text("One step closer.")
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(CC.textSecondary)
+            }
+        }
+    }
+}
+
+// MARK: - Sacred Visualization Mode
+
+struct VisualizationModeView: View {
+    @Environment(\.dismiss) var dismiss
+
+    @State private var breatheScale: CGFloat = 1.0
+    @State private var breatheLabel: String  = "BREATHE IN"
+    @State private var affirmIdx: Int        = 0
+    @State private var affirmOpacity: Double = 1.0
+
+    @State private var breathTask:  Task<Void, Never>?
+    @State private var affirmTask:  Task<Void, Never>?
+
+    private let affirmations = [
+        "I CRAVE\nSTRENGTH",
+        "I CRAVE\nFREEDOM",
+        "I CRAVE\nHEALTH",
+        "I CRAVE\nPEACE",
+        "EVERY CRAVING\nIS ENERGY",
+        "I CHOOSE\nITS DIRECTION",
+        "I AM\nBECOMING STRONGER",
+        "I CHOOSE\nINTENTIONALLY",
+    ]
+
+    var body: some View {
+        ZStack {
+            Color.black.ignoresSafeArea()
+
+            // Breathing circle
+            ZStack {
+                Circle().fill(CC.green.opacity(0.05))
+                Circle().stroke(CC.green.opacity(0.18), lineWidth: 1)
+            }
+            .frame(width: 280, height: 280)
+            .scaleEffect(breatheScale)
+            .glow(CC.green, radius: breatheScale > 1.1 ? 18 : 5)
+            .animation(.easeInOut(duration: 4), value: breatheScale)
+
+            VStack(spacing: CC.xl) {
+                Spacer()
+
+                Text(affirmations[affirmIdx])
+                    .font(.system(size: 48, weight: .black))
+                    .kerning(-2)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, CC.xl)
+                    .opacity(affirmOpacity)
+
+                Text(breatheLabel)
+                    .font(.system(size: 12, weight: .black))
+                    .kerning(3)
+                    .foregroundColor(CC.green)
+                    .animation(CC.smooth, value: breatheLabel)
+
+                Spacer()
+
+                Button { dismiss() } label: {
+                    Text("EXIT")
+                        .font(.system(size: 12, weight: .black))
+                        .kerning(3)
+                        .foregroundColor(CC.textTertiary)
+                        .padding(.horizontal, CC.l)
+                        .padding(.vertical, CC.s)
+                        .background(CC.card.opacity(0.6))
+                        .cornerRadius(CC.rM)
+                }
+                .padding(.bottom, CC.xxl)
+            }
+        }
+        .preferredColorScheme(.dark)
+        .onAppear  { startBreathing(); startAffirmations() }
+        .onDisappear { breathTask?.cancel(); affirmTask?.cancel() }
+    }
+
+    private func startBreathing() {
+        breathTask = Task {
+            while !Task.isCancelled {
+                await MainActor.run { breatheLabel = "BREATHE IN"; breatheScale = 1.28 }
+                try? await Task.sleep(nanoseconds: 4_000_000_000)
+                guard !Task.isCancelled else { return }
+
+                await MainActor.run { breatheLabel = "HOLD" }
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                guard !Task.isCancelled else { return }
+
+                await MainActor.run { breatheLabel = "BREATHE OUT"; breatheScale = 1.0 }
+                try? await Task.sleep(nanoseconds: 4_000_000_000)
+                guard !Task.isCancelled else { return }
+
+                await MainActor.run { breatheLabel = "REST" }
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                guard !Task.isCancelled else { return }
+            }
+        }
+    }
+
+    private func startAffirmations() {
+        affirmTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 8_000_000_000)
+                guard !Task.isCancelled else { return }
+
+                await MainActor.run {
+                    withAnimation(.easeInOut(duration: 0.7)) { affirmOpacity = 0 }
+                }
+                try? await Task.sleep(nanoseconds: 750_000_000)
+                guard !Task.isCancelled else { return }
+
+                await MainActor.run {
+                    affirmIdx = (affirmIdx + 1) % affirmations.count
+                    withAnimation(.easeInOut(duration: 0.7)) { affirmOpacity = 1 }
+                }
             }
         }
     }

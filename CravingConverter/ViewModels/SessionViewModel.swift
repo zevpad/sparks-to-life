@@ -21,6 +21,7 @@ final class SessionViewModel: ObservableObject {
     @Published var customCravingText: String = ""
     @Published var selectedAction: ReplacementAction?
     @Published var selectedNeed: String = ""
+    @Published var whatHelped: String = ""
 
     // Intensity
     @Published var intensityBefore: Int = 0
@@ -205,7 +206,8 @@ final class SessionViewModel: ObservableObject {
             actionName:      selectedAction?.name ?? "",
             intensityBefore: intensityBefore,
             intensityAfter:  intensityAfter,
-            durationSeconds: timerDuration - timeRemaining
+            durationSeconds: timerDuration - timeRemaining,
+            whatHelped:      whatHelped.isEmpty ? nil : whatHelped
         )
     }
 

@@ -5,6 +5,7 @@ struct HomeView: View {
     @EnvironmentObject var audioPlayer: AudioPlayer
     @Binding var showSession: Bool
     @State private var tab: Int = 0
+    @State private var showVisualization = false
 
     private var todaySessions: [CravingSession] {
         let start = Calendar.current.startOfDay(for: Date())
@@ -27,7 +28,12 @@ struct HomeView: View {
                     ctaButton
                         .padding(.horizontal, CC.l)
 
-                    Spacer().frame(height: CC.xl)
+                    Spacer().frame(height: CC.s)
+
+                    visualizeButton
+                        .padding(.horizontal, CC.l)
+
+                    Spacer().frame(height: CC.l)
 
                     statsRow
                         .padding(.horizontal, CC.l)
@@ -83,6 +89,28 @@ struct HomeView: View {
         }
         .glow(CC.green, radius: 20)
         .pulsingBorder(CC.green)
+    }
+
+    // MARK: - Visualize Button
+
+    private var visualizeButton: some View {
+        Button { showVisualization = true } label: {
+            HStack(spacing: CC.s) {
+                Text("🌟").font(.system(size: 15))
+                Text("SACRED VISUALIZATION")
+                    .font(.system(size: 13, weight: .black))
+                    .kerning(0.5)
+                    .foregroundColor(CC.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 44)
+            .background(CC.card)
+            .cornerRadius(CC.rM)
+            .overlay(RoundedRectangle(cornerRadius: CC.rM).stroke(CC.border, lineWidth: 1))
+        }
+        .sheet(isPresented: $showVisualization) {
+            VisualizationModeView()
+        }
     }
 
     // MARK: - Stats

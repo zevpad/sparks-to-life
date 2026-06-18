@@ -107,6 +107,7 @@ struct CravingSession: Identifiable, Codable {
     let intensityBefore: Int
     let intensityAfter: Int
     let durationSeconds: Int
+    var whatHelped: String?
 
     var drop: Int { max(0, intensityBefore - intensityAfter) }
     var wasSuccessful: Bool { intensityAfter < intensityBefore }
@@ -120,7 +121,8 @@ struct CravingSession: Identifiable, Codable {
         actionName: String,
         intensityBefore: Int,
         intensityAfter: Int,
-        durationSeconds: Int
+        durationSeconds: Int,
+        whatHelped: String? = nil
     ) {
         self.id = id
         self.date = date
@@ -130,6 +132,7 @@ struct CravingSession: Identifiable, Codable {
         self.intensityBefore = intensityBefore
         self.intensityAfter = intensityAfter
         self.durationSeconds = durationSeconds
+        self.whatHelped = whatHelped
     }
 }
 
