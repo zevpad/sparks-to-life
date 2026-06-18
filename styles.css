@@ -253,24 +253,32 @@ strong {
 
 .app-icons {
   display: flex;
-  gap: 1rem;
+  flex-direction: row;
+  gap: 0.875rem;
   margin-bottom: 1.25rem;
+  align-items: center;
 }
 
 .app-icon {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+  display: block;
+  width: 80px !important;
+  height: 80px !important;
+  max-width: 80px !important;
+  max-height: 80px !important;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
   object-fit: cover;
-  flex-shrink: 0;
+  flex: 0 0 80px;
 }
 
 @media (max-width: 479px) {
   .app-icon {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
+    width: 64px !important;
+    height: 64px !important;
+    max-width: 64px !important;
+    max-height: 64px !important;
+    flex: 0 0 64px;
+    border-radius: 14px;
   }
 }
 
