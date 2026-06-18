@@ -17,9 +17,23 @@ final class DataStore: ObservableObject {
 
     private init() {
         loadData()
-        if categories.isEmpty { categories = Self.defaultCategories() }
+        if categories.isEmpty {
+            categories = Self.defaultCategories()
+        } else {
+            mergeDefaultCategories()
+        }
         recalculateStreak()
         recalculateTotals()
+    }
+
+    // Injects any new default categories added after initial install
+    private func mergeDefaultCategories() {
+        let existingNames = Set(categories.map { $0.name })
+        let missing = Self.defaultCategories().filter { !existingNames.contains($0.name) }
+        if !missing.isEmpty {
+            categories.append(contentsOf: missing)
+            saveData()
+        }
     }
 
     // MARK: - Smart Sorting
@@ -239,6 +253,7 @@ final class DataStore: ObservableObject {
             ]),
             CravingCategory(name: "Visualization Aids", emoji: "🌟", actions: [
                 ReplacementAction(name: "Tree of Life meditation",        category: .mindfulness, minutesSaved: 10, localImageName: "viz_tree_of_life"),
+                ReplacementAction(name: "Every Craving is Energy",        category: .mindfulness, minutesSaved: 5,  localImageName: "viz_craving_energy"),
                 ReplacementAction(name: "Visualize your ideal self",      category: .mindfulness, minutesSaved: 5),
                 ReplacementAction(name: "Sacred geometry focus",          category: .mindfulness, minutesSaved: 10),
                 ReplacementAction(name: "Breath of light visualization",  category: .breath,      minutesSaved: 5),
