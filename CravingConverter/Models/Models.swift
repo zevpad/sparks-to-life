@@ -37,27 +37,33 @@ struct ReplacementAction: Identifiable, Codable, Equatable {
     var useCount: Int
     var isCustom: Bool
 
-    init(id: UUID = UUID(), name: String, category: ActionCategory, minutesSaved: Int = 10, isCustom: Bool = false) {
+    // localImageName: name of a bundled asset in Assets.xcassets — shown on win screen instead of AI image
+    var localImageName: String?
+
+    init(id: UUID = UUID(), name: String, category: ActionCategory, minutesSaved: Int = 10,
+         isCustom: Bool = false, localImageName: String? = nil) {
         self.id = id
         self.name = name
         self.category = category
         self.minutesSaved = minutesSaved
         self.isCustom = isCustom
+        self.localImageName = localImageName
         self.successCount = 0
         self.useCount = 0
     }
 
-    // Resilient decode — isCustom defaults to false for data saved before the field existed
-    enum CodingKeys: CodingKey { case id, name, category, minutesSaved, successCount, useCount, isCustom }
+    // Resilient decode — new fields default gracefully for data saved before they existed
+    enum CodingKeys: CodingKey { case id, name, category, minutesSaved, successCount, useCount, isCustom, localImageName }
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        id           = try c.decode(UUID.self,           forKey: .id)
-        name         = try c.decode(String.self,         forKey: .name)
-        category     = try c.decode(ActionCategory.self, forKey: .category)
-        minutesSaved = try c.decode(Int.self,            forKey: .minutesSaved)
-        successCount = try c.decode(Int.self,            forKey: .successCount)
-        useCount     = try c.decode(Int.self,            forKey: .useCount)
-        isCustom     = (try? c.decode(Bool.self,         forKey: .isCustom)) ?? false
+        id              = try c.decode(UUID.self,           forKey: .id)
+        name            = try c.decode(String.self,         forKey: .name)
+        category        = try c.decode(ActionCategory.self, forKey: .category)
+        minutesSaved    = try c.decode(Int.self,            forKey: .minutesSaved)
+        successCount    = try c.decode(Int.self,            forKey: .successCount)
+        useCount        = try c.decode(Int.self,            forKey: .useCount)
+        isCustom        = (try? c.decode(Bool.self,         forKey: .isCustom))        ?? false
+        localImageName  = try? c.decode(String.self,        forKey: .localImageName)
     }
 }
 
