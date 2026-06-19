@@ -937,8 +937,9 @@ struct WinView: View {
 
     @ViewBuilder
     private var goalImage: some View {
-        if let assetName = vm.selectedAction?.localImageName {
-            Image(assetName)
+        if let assetName = vm.selectedAction?.localImageName,
+           let uiImg = UIImage(named: assetName) {
+            Image(uiImage: uiImg)
                 .resizable()
                 .scaledToFill()
                 .frame(height: 260)

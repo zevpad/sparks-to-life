@@ -25,17 +25,32 @@ final class AudioPlayer: ObservableObject {
     }
 
     private func loadTrack() {
-        // Looks for: theme.mp3, theme.m4a, theme.aac, theme.wav (add your Suno file with one of these names)
-        let candidates = [("theme", "mp3"), ("theme", "m4a"), ("theme", "aac"), ("theme", "wav")]
+        let candidates = [
+            ("theme", "mp3"), ("theme", "m4a"), ("theme", "aac"), ("theme", "wav"),
+            ("Suno1_lift_the_spark", "mp3"), ("Suno1_lift_the_spark", "m4a")
+        ]
         for (name, ext) in candidates {
-            if let url = Bundle.main.url(forResource: name, withExtension: ext) {
-                do {
-                    player = try AVAudioPlayer(contentsOf: url)
-                    player?.numberOfLoops = -1   // loop forever
+            if let url = Bundle.main.url(forResource: name, withExtension: ext),
+               let p = try? AVAudioPlayer(contentsOf: url) {
+                player = p
+                player?.numberOfLoops = -1
+                player?.volume = 0.65
+                player?.prepareToPlay()
+                return
+            }
+        }
+        // Fallback: play the first audio file found in the bundle
+        let audioExts = Set(["mp3", "m4a", "aac", "wav", "caf"])
+        if let bundleURL = Bundle.main.resourceURL,
+           let contents = try? FileManager.default.contentsOfDirectory(at: bundleURL, includingPropertiesForKeys: nil) {
+            for url in contents where audioExts.contains(url.pathExtension.lowercased()) {
+                if let p = try? AVAudioPlayer(contentsOf: url) {
+                    player = p
+                    player?.numberOfLoops = -1
                     player?.volume = 0.65
                     player?.prepareToPlay()
-                } catch {}
-                return
+                    return
+                }
             }
         }
     }
