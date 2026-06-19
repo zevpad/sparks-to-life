@@ -118,7 +118,7 @@ struct CravingPickerView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: CC.xl) {
-                PageHeader("What's\ncalling you?", subtitle: "Pick the closest match.")
+                PageHeader(title: "What's\ncalling you?", subtitle: "Pick the closest match.")
                     .padding(.horizontal, CC.l)
                     .padding(.top, CC.m)
 
@@ -282,7 +282,7 @@ struct CustomCravingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: CC.xl) {
-            PageHeader("Name it.", subtitle: "What's the craving?")
+            PageHeader(title: "Name it.", subtitle: "What's the craving?")
                 .padding(.horizontal, CC.l)
                 .padding(.top, CC.m)
 
@@ -326,7 +326,7 @@ struct IntensityStepView: View {
                 VStack(alignment: .leading, spacing: CC.xl) {
                     VStack(alignment: .leading, spacing: CC.s) {
                         PageHeader(
-                            isAfter ? "How intense\nis it now?" : "How intense\nis the craving?",
+                            title: isAfter ? "How intense\nis it now?" : "How intense\nis the craving?",
                             subtitle: isAfter ? "Be honest. Any drop counts." : "Rate 1 (mild) → 10 (peak)."
                         )
                         if isAfter, let action = vm.selectedAction {
@@ -385,7 +385,7 @@ struct ActionPickerView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: CC.l) {
                 VStack(alignment: .leading, spacing: CC.s) {
-                    PageHeader("Pick one action.", subtitle: "Do it for the timer. Just one.")
+                    PageHeader(title: "Pick one action.", subtitle: "Do it for the timer. Just one.")
                     if let cat = vm.selectedCategory {
                         Text("\(cat.emoji)  \(cat.name)")
                             .font(.system(size: 13, weight: .semibold))
@@ -587,7 +587,7 @@ struct DeeperNeedView: View {
     private var needGrid: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: CC.xl) {
-                PageHeader("What do you\nreally need?",
+                PageHeader(title: "What do you\nreally need?",
                            subtitle: "The craving is a signal. What's it pointing to?")
                     .padding(.horizontal, CC.l)
                     .padding(.top, CC.m)
