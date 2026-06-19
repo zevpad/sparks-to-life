@@ -793,6 +793,7 @@ struct WinView: View {
 
     @State private var showConfetti = false
     @State private var ready = false
+    @State private var builtSession: CravingSession?
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -842,7 +843,7 @@ struct WinView: View {
                         .animation(.easeOut(duration: 0.5).delay(0.35), value: ready)
 
                     // Session card
-                    if let session = vm.buildSession() {
+                    if let session = builtSession {
                         WinSummaryCard(session: session)
                             .padding(.horizontal, CC.l)
                             .opacity(ready ? 1 : 0)
@@ -857,7 +858,7 @@ struct WinView: View {
 
                     // Done
                     PrimaryButton(title: "Back to home", color: CC.green) {
-                        if let session = vm.buildSession() {
+                        if let session = builtSession {
                             dataStore.completeSession(
                                 session,
                                 categoryId: vm.selectedCategory?.id ?? UUID(),
@@ -879,6 +880,7 @@ struct WinView: View {
         }
         .onAppear {
             guard !ready else { return }
+            builtSession = vm.buildSession()
             ready = true
             showConfetti = true
             Task {
