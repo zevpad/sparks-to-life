@@ -165,6 +165,13 @@ struct PageHeader: View {
     let title: String
     var subtitle: String? = nil
 
+    init(_ title: String, subtitle: String? = nil) {
+        self.title = title; self.subtitle = subtitle
+    }
+    init(title: String, subtitle: String? = nil) {
+        self.title = title; self.subtitle = subtitle
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: CC.s) {
             Text(title)
