@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="אוצר הסת״ם דיגיטלי — מסע הסת״ם: עקבו אחרי כתיבת התפילין שלכם, מהקלף ועד המסירה. הדמיית קונספט." />
+  <title>מסע הסת״ם — אוצר הסת״ם דיגיטלי · הדמיית קונספט</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --parchment: #f7f1e4;
+      --parchment-deep: #efe5d0;
+      --ink: #2b241a;
+      --ink-soft: #5b5142;
+      --gold: #a97e2f;
+      --gold-soft: #c9a75e;
+      --done: #3e7a4e;
+      --line: #d9cbae;
+      --card: #fffdf7;
+      --whatsapp: #25d366;
+      --radius: 14px;
+      --shadow: 0 2px 14px rgba(43, 36, 26, 0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'Heebo', 'Frank Ruhl Libre', sans-serif;
+      line-height: 1.65;
+    }
+    h1, h2, h3, .serif { font-family: 'Frank Ruhl Libre', serif; }
+    .container { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+    /* language toggle: html.en hides .he, shows .en */
+    .en { display: none; }
+    html.lang-en .en { display: revert; }
+    html.lang-en .he { display: none; }
+
+    .bsd {
+      text-align: center; font-size: 0.8rem; color: var(--ink-soft);
+      padding-top: 10px;
+    }
+
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0;
+    }
+    .brand { font-family: 'Frank Ruhl Libre', serif; font-weight: 900; font-size: 1.05rem; }
+    .brand small { display: block; font-weight: 400; font-size: 0.72rem; color: var(--gold); letter-spacing: 0.06em; }
+    .lang-btn {
+      border: 1px solid var(--line); background: var(--card); color: var(--ink);
+      border-radius: 999px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer;
+      font-family: inherit;
+    }
+    .lang-btn:hover { border-color: var(--gold); }
+
+    .concept-badge {
+      display: block; width: fit-content; margin: 10px auto 0;
+      background: var(--ink); color: var(--parchment);
+      font-size: 0.72rem; letter-spacing: 0.08em;
+      padding: 4px 14px; border-radius: 999px;
+    }
+
+    .hero { text-align: center; padding: 28px 0 10px; }
+    .hero h1 { font-size: 2rem; font-weight: 900; line-height: 1.25; }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero p { margin-top: 12px; color: var(--ink-soft); font-size: 1.02rem; }
+
+    .section { padding: 26px 0; }
+    .section-title {
+      font-size: 0.78rem; letter-spacing: 0.14em; color: var(--gold);
+      text-transform: uppercase; margin-bottom: 10px; font-weight: 700;
+    }
+
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    /* order header card */
+    .order-head { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; }
+    .order-head h2 { font-size: 1.3rem; font-weight: 700; }
+    .order-meta { font-size: 0.88rem; color: var(--ink-soft); margin-top: 2px; }
+    .order-id {
+      font-size: 0.78rem; background: var(--parchment-deep); border: 1px dashed var(--gold-soft);
+      padding: 6px 12px; border-radius: 8px; color: var(--ink-soft); white-space: nowrap;
+    }
+    .progress-wrap { margin-top: 18px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 6px; }
+    .progress-bar { height: 10px; background: var(--parchment-deep); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 46%; border-radius: 999px; background: linear-gradient(90deg, var(--gold-soft), var(--gold)); }
+
+    /* sofer card */
+    .sofer { display: flex; gap: 16px; align-items: center; margin-top: 16px; }
+    .avatar {
+      width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+      background: radial-gradient(circle at 30% 25%, #6d5b3d, #3d3222);
+      color: var(--parchment); display: flex; align-items: center; justify-content: center;
+      font-family: 'Frank Ruhl Libre', serif; font-size: 1.4rem; font-weight: 700;
+      border: 2px solid var(--gold-soft);
+    }
+    .sofer h3 { font-size: 1.05rem; }
+    .sofer p { font-size: 0.85rem; color: var(--ink-soft); }
+    .cert-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .chip {
+      font-size: 0.72rem; background: var(--parchment-deep); color: var(--ink-soft);
+      border-radius: 999px; padding: 2px 10px; border: 1px solid var(--line);
+    }
+
+    /* timeline */
+    .timeline { list-style: none; margin-top: 8px; }
+    .timeline li {
+      position: relative; padding: 0 34px 26px 0; /* rtl: dot on right */
+    }
+    html.lang-en .timeline li { padding: 0 0 26px 34px; }
+    .timeline li::before {
+      content: ''; position: absolute; top: 22px; bottom: -2px; right: 9px;
+      width: 2px; background: var(--line);
+    }
+    html.lang-en .timeline li::before { right: auto; left: 9px; }
+    .timeline li:last-child::before { display: none; }
+    .dot {
+      position: absolute; top: 3px; right: 0; width: 20px; height: 20px;
+      border-radius: 50%; border: 2px solid var(--line); background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: #fff;
+    }
+    html.lang-en .dot { right: auto; left: 0; }
+    li.done .dot { background: var(--done); border-color: var(--done); }
+    li.done .dot::after { content: '✓'; }
+    li.current .dot { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 0 5px rgba(169, 126, 47, 0.18); }
+    li.current .dot::after { content: '✎'; }
+    .m-title { font-weight: 700; font-size: 0.98rem; }
+    li.pending .m-title { color: var(--ink-soft); font-weight: 500; }
+    .m-date { font-size: 0.78rem; color: var(--gold); margin-top: 1px; }
+    .m-note { font-size: 0.86rem; color: var(--ink-soft); margin-top: 3px; }
+    li.current .m-body {
+      background: var(--parchment-deep); border: 1px solid var(--gold-soft);
+      border-radius: 10px; padding: 12px 14px; margin-top: 4px;
+    }
+    .sub-progress { display: flex; gap: 5px; margin-top: 8px; }
+    .sub-progress span {
+      flex: 1; height: 7px; border-radius: 999px; background: var(--line);
+    }
+    .sub-progress span.f { background: var(--done); }
+    .sub-progress span.h { background: linear-gradient(90deg, var(--done) 50%, var(--line) 50%); }
+    .sub-caption { font-size: 0.75rem; color: var(--ink-soft); margin-top: 5px; }
+
+    /* whatsapp mock */
+    .wa-card { border-color: #cfe9d6; background: #f4fbf6; }
+    .wa-bubble {
+      background: #fff; border-radius: 12px; padding: 12px 14px; margin-top: 12px;
+      box-shadow: var(--shadow); font-size: 0.9rem; max-width: 92%;
+      border: 1px solid #dcefe1; position: relative;
+    }
+    .wa-bubble .time { display: block; font-size: 0.68rem; color: #8aa593; text-align: left; margin-top: 4px; }
+    html.lang-en .wa-bubble .time { text-align: right; }
+    .wa-head { display: flex; align-items: center; gap: 10px; }
+    .wa-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--whatsapp); }
+    .wa-head strong { font-size: 0.92rem; }
+
+    /* certificate */
+    .cert-card {
+      border: 2px solid var(--gold-soft); background:
+        linear-gradient(var(--card), var(--card)) padding-box;
+      position: relative; overflow: hidden;
+    }
+    .cert-inner { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+    .cert-text { flex: 1 1 300px; }
+    .cert-text h3 { font-size: 1.2rem; margin-bottom: 6px; }
+    .cert-rows { margin-top: 10px; font-size: 0.88rem; }
+    .cert-rows div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px dotted var(--line); }
+    .cert-rows dt { color: var(--ink-soft); }
+    .cert-rows dd { font-weight: 500; text-align: left; }
+    html.lang-en .cert-rows dd { text-align: right; }
+    .qr-box { text-align: center; }
+    .qr-box svg { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+    .qr-box p { font-size: 0.72rem; color: var(--ink-soft); margin-top: 6px; max-width: 140px; }
+
+    /* staff simplicity */
+    .staff-steps { display: grid; gap: 12px; margin-top: 12px; }
+    .staff-step { display: flex; gap: 12px; align-items: flex-start; }
+    .staff-num {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      background: var(--ink); color: var(--parchment); font-size: 0.8rem;
+      display: flex; align-items: center; justify-content: center; font-weight: 700;
+    }
+    .staff-step p { font-size: 0.92rem; }
+    .staff-step p strong { display: block; }
+
+    /* roadmap */
+    .roadmap { display: grid; gap: 10px; margin-top: 12px; }
+    .roadmap .card { padding: 14px 18px; display: flex; gap: 12px; align-items: baseline; }
+    .phase-tag { font-size: 0.7rem; color: var(--gold); font-weight: 700; letter-spacing: 0.08em; white-space: nowrap; }
+    .roadmap p { font-size: 0.9rem; }
+    .roadmap p strong { display: block; font-size: 0.95rem; }
+
+    .footer {
+      text-align: center; padding: 34px 20px 40px; color: var(--ink-soft);
+      font-size: 0.8rem; border-top: 1px solid var(--line); margin-top: 30px;
+    }
+    .footer p + p { margin-top: 6px; }
+
+    @media (min-width: 620px) {
+      .hero h1 { font-size: 2.5rem; }
+      .staff-steps { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bsd serif">בס״ד</div>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <span class="he">אוצר הסת״ם דיגיטלי</span>
+        <span class="en">Otzar HaSTaM Digital</span>
+        <small>
+          <span class="he">מסע הסת״ם · הדמיית קונספט</span>
+          <span class="en">The STaM Journey · Concept Mockup</span>
+        </small>
+      </div>
+      <button class="lang-btn" id="lang-toggle" type="button">
+        <span class="he">English</span>
+        <span class="en">עברית</span>
+      </button>
+    </div>
+  </div>
+
+  <span class="concept-badge">
+    <span class="he">הדמיה בלבד — לא מוצר פעיל</span>
+    <span class="en">MOCKUP ONLY — NOT A LIVE PRODUCT</span>
+  </span>
+
+  <header class="hero container">
+    <h1>
+      <span class="he">עקבו אחרי התפילין שלכם —<br /><em>מהקלף ועד המסירה</em></span>
+      <span class="en">Follow your tefillin —<br /><em>from the klaf to your hands</em></span>
+    </h1>
+    <p>
+      <span class="he">כל לקוח מקבל קישור אישי. בכל אבן דרך בכתיבה — הוא רואה, בזמן אמת, בידי מי ואיפה נמצאים התפילין שלו.</span>
+      <span class="en">Every customer gets a personal link. At every milestone of the writing, they see — in real time — who is working on their tefillin and where it stands.</span>
+    </p>
+  </header>
+
+  <main class="container">
+
+    <!-- ORDER CARD -->
+    <section class="section">
+      <div class="section-title">
+        <span class="he">כך זה נראה ללקוח</span>
+        <span class="en">What the customer sees</span>
+      </div>
+      <div class="card">
+        <div class="order-head">
+          <div>
+            <h2>
+              <span class="he">תפילין — כתב רש״י, גסות</span>
+              <span class="en">Tefillin — Ksav Rashi, Gassos</span>
+            </h2>
+            <p class="order-meta">
+              <span class="he">לבר המצווה של ארי לוי · צפוי להיות מוכן: ט״ו בכסלו תשפ״ז</span>
+              <span class="en">For Ari Levi's bar mitzvah · Expected ready: 15 Kislev 5787</span>
+            </p>
+          </div>
+          <span class="order-id">
+            <span class="he">הזמנה מס׳ OH-2417</span>
+            <span class="en">Order № OH-2417</span>
+          </span>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>
+              <span class="he">התקדמות כללית</span>
+              <span class="en">Overall progress</span>
+            </span>
+            <span>4/9</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+        </div>
+
+        <div class="sofer">
+          <div class="avatar serif">מ״כ</div>
+          <div>
+            <h3>
+              <span class="he">הסופר שלכם: הרב מ. כהן</span>
+              <span class="en">Your sofer: Rabbi M. Cohen</span>
+            </h3>
+            <p>
+              <span class="he">סופר סת״ם מוסמך · 18 שנות כתיבה · צפת</span>
+              <span class="en">Certified sofer STaM · 18 years of writing · Tzfat</span>
+            </p>
+            <div class="cert-chips">
+              <span class="chip">
+                <span class="he">קלף בהשגחת ה־OK</span>
+                <span class="en">OK-supervised klaf</span>
+              </span>
+              <span class="chip">
+                <span class="he">הגהת מחשב + מגיה מוסמך</span>
+                <span class="en">Computer scan + certified magiha</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="section">
+      <div class="section-title">
+        <span class="he">מסע הסת״ם — אבני הדרך</span>
+        <span class="en">The STaM Journey — milestones</span>
+      </div>
+      <div class="card">
+        <ol class="timeline">
+
+          <li class="done">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">קבלת ההזמנה</span>
+                <span class="en">Order received</span>
+              </p>
+              <p class="m-date">
+                <span class="he">ג׳ באלול תשפ״ו · 16.08.2026</span>
+                <span class="en">3 Elul 5786 · Aug 16, 2026</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="done">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">בחירת הקלף</span>
+                <span class="en">Klaf selected</span>
+              </p>
+              <p class="m-date">
+                <span class="he">ז׳ באלול תשפ״ו · 20.08.2026</span>
+                <span class="en">7 Elul 5786 · Aug 20, 2026</span>
+              </p>
+              <p class="m-note">
+                <span class="he">קלף עבודת יד בהשגחת ה־OK, נבדק ואושר.</span>
+                <span class="en">Handmade OK-supervised klaf, inspected and approved.</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="done">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">שיבוץ הסופר</span>
+                <span class="en">Sofer assigned</span>
+              </p>
+              <p class="m-date">
+                <span class="he">י׳ באלול תשפ״ו · 23.08.2026</span>
+                <span class="en">10 Elul 5786 · Aug 23, 2026</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="current">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">כתיבת הפרשיות — בתהליך ✍️</span>
+                <span class="en">Writing the parshiyos — in progress ✍️</span>
+              </p>
+              <p class="m-date">
+                <span class="he">עדכון אחרון: י״ז באלול תשפ״ו · 30.08.2026</span>
+                <span class="en">Last update: 17 Elul 5786 · Aug 30, 2026</span>
+              </p>
+              <p class="m-note">
+                <span class="he">של יד — הושלמה. של ראש — 3 מתוך 4 פרשיות נכתבו.</span>
+                <span class="en">Shel yad — complete. Shel rosh — 3 of 4 parshiyos written.</span>
+              </p>
+              <div class="sub-progress">
+                <span class="f"></span><span class="f"></span><span class="f"></span>
+                <span class="f"></span><span class="f"></span><span class="f"></span>
+                <span class="f"></span><span></span>
+              </div>
+              <p class="sub-caption">
+                <span class="he">7 מתוך 8 פרשיות (של יד + של ראש)</span>
+                <span class="en">7 of 8 parshiyos (shel yad + shel rosh)</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="pending">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">סריקת מחשב</span>
+                <span class="en">Computer scan check</span>
+              </p>
+              <p class="m-note">
+                <span class="he">כל אות נבדקת בתוכנת הגהה ממוחשבת.</span>
+                <span class="en">Every letter checked by computerized proofing software.</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="pending">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">הגהה על ידי מגיה מוסמך</span>
+                <span class="en">Review by a certified magiha</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="pending">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">הכנסה לבתים והתאמה</span>
+                <span class="en">Insertion into the batim &amp; fitting</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="pending">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">בדיקה סופית והנפקת תעודה דיגיטלית</span>
+                <span class="en">Final inspection &amp; digital certificate issued</span>
+              </p>
+            </div>
+          </li>
+
+          <li class="pending">
+            <span class="dot"></span>
+            <div class="m-body">
+              <p class="m-title">
+                <span class="he">מוכן למסירה 🎉</span>
+                <span class="en">Ready for pickup 🎉</span>
+              </p>
+              <p class="m-note">
+                <span class="he">איסוף במרכז המבקרים בהר כנען, או משלוח מבוטח.</span>
+                <span class="en">Pickup at the Mount Canaan visitors center, or insured delivery.</span>
+              </p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- WHATSAPP -->
+    <section class="section">
+      <div class="section-title">
+        <span class="he">עדכונים בוואטסאפ — איפה שהלקוחות כבר נמצאים</span>
+        <span class="en">WhatsApp updates — where customers already are</span>
+      </div>
+      <div class="card wa-card">
+        <div class="wa-head">
+          <span class="wa-dot"></span>
+          <strong>
+            <span class="he">אוצר הסת״ם</span>
+            <span class="en">Otzar HaSTaM</span>
+          </strong>
+        </div>
+        <div class="wa-bubble">
+          <span class="he">שלום משפחת לוי! 🎉 הרב כהן סיים היום את פרשיות של יד של התפילין של ארי. אפשר לראות את ההתקדמות המלאה כאן: otzar.example/j/OH-2417</span>
+          <span class="en">Hello Levi family! 🎉 Rabbi Cohen finished the shel yad parshiyos of Ari's tefillin today. See the full progress here: otzar.example/j/OH-2417</span>
+          <span class="time">14:32</span>
+        </div>
+        <div class="wa-bubble">
+          <span class="he">איזו התרגשות! ארי בודק כל בוקר אם יש עדכון חדש 😊</span>
+          <span class="en">So exciting! Ari checks every morning for a new update 😊</span>
+          <span class="time">14:47</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATE -->
+    <section class="section">
+      <div class="section-title">
+        <span class="he">בסוף המסע — תעודה דיגיטלית מאומתת</span>
+        <span class="en">At the journey's end — a verified digital certificate</span>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-inner">
+          <div class="cert-text">
+            <h3>
+              <span class="he">תעודת אותנטיות — תפילין OH-2417</span>
+              <span class="en">Certificate of Authenticity — Tefillin OH-2417</span>
+            </h3>
+            <p style="font-size:0.9rem; color:var(--ink-soft);">
+              <span class="he">סריקת קוד ה־QR שעל התעודה המודפסת מובילה לדף אימות רשמי — כך שהאמינות של אוצר הסת״ם עוברת יחד עם התפילין, גם בעוד עשרים שנה.</span>
+              <span class="en">Scanning the QR on the printed certificate opens an official verification page — so Otzar HaSTaM's credibility travels with the tefillin, even twenty years from now.</span>
+            </p>
+            <dl class="cert-rows">
+              <div>
+                <dt><span class="he">נכתב על ידי</span><span class="en">Written by</span></dt>
+                <dd><span class="he">הרב מ. כהן, סופר מוסמך</span><span class="en">Rabbi M. Cohen, certified sofer</span></dd>
+              </div>
+              <div>
+                <dt><span class="he">קלף</span><span class="en">Klaf</span></dt>
+                <dd><span class="he">עבודת יד, בהשגחת ה־OK</span><span class="en">Handmade, OK supervision</span></dd>
+              </div>
+              <div>
+                <dt><span class="he">הגהה</span><span class="en">Proofing</span></dt>
+                <dd><span class="he">סריקת מחשב + מגיה מוסמך</span><span class="en">Computer scan + certified magiha</span></dd>
+              </div>
+              <div>
+                <dt><span class="he">הונפקה</span><span class="en">Issued</span></dt>
+                <dd><span class="he">י״ד בכסלו תשפ״ז</span><span class="en">14 Kislev 5787</span></dd>
+              </div>
+            </dl>
+          </div>
+          <div class="qr-box">
+            <svg width="132" height="132" viewBox="0 0 33 33" aria-hidden="true">
+              <rect width="33" height="33" fill="#fff"/>
+              <g fill="#2b241a">
+                <!-- finder patterns -->
+                <path d="M1 1h7v7H1zM3 3h3v3H3z" fill-rule="evenodd"/>
+                <path d="M25 1h7v7h-7zM27 3h3v3h-3z" fill-rule="evenodd"/>
+                <path d="M1 25h7v7H1zM3 27h3v3H3z" fill-rule="evenodd"/>
+                <!-- data modules (decorative) -->
+                <rect x="10" y="2" width="1" height="1"/><rect x="12" y="1" width="1" height="1"/>
+                <rect x="14" y="3" width="1" height="1"/><rect x="16" y="1" width="1" height="1"/>
+                <rect x="18" y="2" width="1" height="1"/><rect x="20" y="4" width="1" height="1"/>
+                <rect x="22" y="2" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/>
+                <rect x="15" y="6" width="1" height="1"/><rect x="19" y="6" width="1" height="1"/>
+                <rect x="10" y="8" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/>
+                <rect x="17" y="8" width="1" height="1"/><rect x="21" y="9" width="1" height="1"/>
+                <rect x="2" y="10" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/>
+                <rect x="8" y="12" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/>
+                <rect x="14" y="12" width="1" height="1"/><rect x="16" y="10" width="1" height="1"/>
+                <rect x="19" y="12" width="1" height="1"/><rect x="22" y="11" width="1" height="1"/>
+                <rect x="25" y="10" width="1" height="1"/><rect x="28" y="12" width="1" height="1"/>
+                <rect x="30" y="10" width="1" height="1"/><rect x="3" y="14" width="1" height="1"/>
+                <rect x="6" y="15" width="1" height="1"/><rect x="9" y="14" width="1" height="1"/>
+                <rect x="12" y="15" width="1" height="1"/><rect x="15" y="16" width="1" height="1"/>
+                <rect x="18" y="14" width="1" height="1"/><rect x="21" y="16" width="1" height="1"/>
+                <rect x="24" y="15" width="1" height="1"/><rect x="27" y="14" width="1" height="1"/>
+                <rect x="30" y="16" width="1" height="1"/><rect x="2" y="18" width="1" height="1"/>
+                <rect x="5" y="19" width="1" height="1"/><rect x="8" y="18" width="1" height="1"/>
+                <rect x="11" y="19" width="1" height="1"/><rect x="14" y="20" width="1" height="1"/>
+                <rect x="17" y="18" width="1" height="1"/><rect x="20" y="20" width="1" height="1"/>
+                <rect x="23" y="19" width="1" height="1"/><rect x="26" y="18" width="1" height="1"/>
+                <rect x="29" y="20" width="1" height="1"/><rect x="3" y="22" width="1" height="1"/>
+                <rect x="7" y="22" width="1" height="1"/><rect x="10" y="23" width="1" height="1"/>
+                <rect x="13" y="22" width="1" height="1"/><rect x="16" y="23" width="1" height="1"/>
+                <rect x="19" y="22" width="1" height="1"/><rect x="22" y="23" width="1" height="1"/>
+                <rect x="25" y="22" width="1" height="1"/><rect x="28" y="22" width="1" height="1"/>
+                <rect x="10" y="26" width="1" height="1"/><rect x="13" y="27" width="1" height="1"/>
+                <rect x="16" y="26" width="1" height="1"/><rect x="19" y="28" width="1" height="1"/>
+                <rect x="22" y="26" width="1" height="1"/><rect x="25" y="28" width="1" height="1"/>
+                <rect x="28" y="27" width="1" height="1"/><rect x="11" y="30" width="1" height="1"/>
+                <rect x="14" y="30" width="1" height="1"/><rect x="17" y="31" width="1" height="1"/>
+                <rect x="20" y="30" width="1" height="1"/><rect x="24" y="31" width="1" height="1"/>
+                <rect x="27" y="30" width="1" height="1"/><rect x="30" y="29" width="1" height="1"/>
+              </g>
+            </svg>
+            <p>
+              <span class="he">קוד להמחשה בלבד — אינו ניתן לסריקה</span>
+              <span class="en">Illustrative code only — not scannable</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAFF -->
+    <section class="section">
+      <div class="section-title">
+        <span class="he">ומה נדרש מהצוות? כמעט כלום.</span>
+        <span class="en">And what does it ask of the staff? Almost nothing.</span>
+      </div>
+      <div class="card">
+        <p style="font-size:0.95rem;">
+          <span class="he">המערכת מתוכננת כך שעדכון אבן דרך לוקח פחות מעשר שניות, מהטלפון, בלי מחשב ובלי הדרכה:</span>
+          <span class="en">The system is designed so updating a milestone takes under ten seconds, from a phone, with no computer and no training:</span>
+        </p>
+        <div class="staff-steps">
+          <div class="staff-step">
+            <span class="staff-num">1</span>
+            <p>
+              <span class="he"><strong>פותחים קישור</strong> ברשימת ההזמנות הפעילות בטלפון.</span>
+              <span class="en"><strong>Open a link</strong> to the active-orders list on a phone.</span>
+            </p>
+          </div>
+          <div class="staff-step">
+            <span class="staff-num">2</span>
+            <p>
+              <span class="he"><strong>לוחצים על אבן הדרך</strong> שהושלמה. זהו.</span>
+              <span class="en"><strong>Tap the milestone</strong> that was completed. That's it.</span>
+            </p>
+          </div>
+          <div class="staff-step">
+            <span class="staff-num">3</span>
+            <p>
+              <span class="he"><strong>הלקוח מקבל וואטסאפ</strong> אוטומטית, והדף האישי שלו מתעדכן.</span>
+              <span class="en"><strong>The customer gets a WhatsApp</strong> automatically, and their page updates.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="section">
+      <div class="section-title">
+        <span class="he">אם הרעיון מוצא חן — לאן זה יכול לגדול</span>
+        <span class="en">If the idea resonates — where it can grow</span>
+      </div>
+      <div class="roadmap">
+        <div class="card">
+          <span class="phase-tag">
+            <span class="he">שלב א׳</span><span class="en">PHASE 1</span>
+          </span>
+          <p>
+            <span class="he"><strong>מסע הסת״ם</strong> — מעקב אבני דרך + תעודה דיגיטלית (הדף הזה).</span>
+            <span class="en"><strong>The STaM Journey</strong> — milestone tracking + digital certificate (this page).</span>
+          </p>
+        </div>
+        <div class="card">
+          <span class="phase-tag">
+            <span class="he">שלב ב׳</span><span class="en">PHASE 2</span>
+          </span>
+          <p>
+            <span class="he"><strong>הזמנת סיורים אונליין</strong> למרכז המבקרים — עברית / English / Русский, עם מודעות ללוח העברי.</span>
+            <span class="en"><strong>Online tour booking</strong> for the visitors center — Hebrew / English / Russian, Hebrew-calendar aware.</span>
+          </p>
+        </div>
+        <div class="card">
+          <span class="phase-tag">
+            <span class="he">שלב ג׳</span><span class="en">PHASE 3</span>
+          </span>
+          <p>
+            <span class="he"><strong>פלטפורמת הקדשות ספר תורה</strong> — תורמים רוכשים אותיות, פסוקים ופרשיות ועוקבים אחרי הכתיבה.</span>
+            <span class="en"><strong>Sefer Torah dedication platform</strong> — donors sponsor letters, verses and parshiyos, and follow the writing.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>
+      <span class="he">הדמיית קונספט שהוכנה כמחווה עבור אוצר הסת״ם, צפת. אינה מוצר רשמי ואינה מטעם המוסד.</span>
+      <span class="en">A concept mockup prepared as a gesture for Otzar HaSTaM, Tzfat. Not an official product and not affiliated with the institution.</span>
+    </p>
+    <p>
+      <span class="he">כל השמות, התאריכים והפרטים בדף זה הם דוגמה בלבד.</span>
+      <span class="en">All names, dates and details on this page are sample data only.</span>
+    </p>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById('lang-toggle');
+      function apply(lang) {
+        if (lang === 'en') {
+          root.classList.add('lang-en');
+          root.lang = 'en';
+          root.dir = 'ltr';
+        } else {
+          root.classList.remove('lang-en');
+          root.lang = 'he';
+          root.dir = 'rtl';
+        }
+        try { localStorage.setItem('otzar-lang', lang); } catch (e) {}
+      }
+      btn.addEventListener('click', function () {
+        apply(root.classList.contains('lang-en') ? 'he' : 'en');
+      });
+      var saved = null;
+      try { saved = localStorage.getItem('otzar-lang'); } catch (e) {}
+      if (saved === 'en') apply('en');
+    })();
+  </script>
+
+</body>
+</html>
