@@ -7,13 +7,10 @@ const CONFIG = {
   studioName: 'Sparks to Life Studio',
   artistName: 'the artist',
 
-  // TODO: replace with the real WhatsApp number in international
-  // format, digits only (e.g. Israeli 050-123-4567 -> 972501234567)
-  whatsappNumber: '972500000000',
+  whatsappNumber: '972584131856',
 
-  // TODO: replace with the real dialable number for click-to-call
-  phoneDisplay: '050-000-0000',
-  phoneDial: '+972500000000',
+  phoneDisplay: '058-413-1856',
+  phoneDial: '+972584131856',
 };
 
 /* ============================================================
