@@ -58,6 +58,25 @@ Swapping CallMeBot for an email provider later (e.g. Resend) only
 requires editing `functions/api/notify.js` — the client code doesn't
 change.
 
+## Custom domain: candles.thehonuway.com
+
+`functions/_middleware.js` rewrites `/` to the McLevy page whenever the
+request arrives on the candle subdomain (visitors see a clean
+`candles.thehonuway.com`, no `/gallery/` in the URL). All other hosts
+and paths are untouched, so the tester page keeps working at the
+project's default URLs. Two one-time steps in the dashboards:
+
+1. **Cloudflare Pages** → `sparks-to-life` project → **Custom domains**
+   → *Set up a custom domain* → enter `candles.thehonuway.com`.
+   Cloudflare shows the exact DNS record it wants.
+2. **Wherever thehonuway.com's DNS is managed** (registrar or DreamHost
+   — the www record currently points at DreamHost), add that record:
+   a `CNAME` for `candles` → `sparks-to-life.pages.dev`.
+
+Certificates are issued automatically once the CNAME resolves (usually
+minutes). If the subdomain ever changes, set a `CANDLE_HOST` env var on
+the Pages project instead of editing code.
+
 ## Pricing
 
 Prices are deliberately not rendered. They live in an HTML comment in
