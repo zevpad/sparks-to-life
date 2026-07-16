@@ -58,24 +58,47 @@ Swapping CallMeBot for an email provider later (e.g. Resend) only
 requires editing `functions/api/notify.js` — the client code doesn't
 change.
 
-## Custom domain: candles.thehonuway.com
+## Custom domain: tzfatcandles.thehonuway.com
 
 `functions/_middleware.js` rewrites `/` to the McLevy page whenever the
 request arrives on the candle subdomain (visitors see a clean
-`candles.thehonuway.com`, no `/gallery/` in the URL). All other hosts
-and paths are untouched, so the tester page keeps working at the
+`tzfatcandles.thehonuway.com`, no `/gallery/` in the URL). All other
+hosts and paths are untouched, so the tester page keeps working at the
 project's default URLs. Two one-time steps in the dashboards:
 
-1. **Cloudflare Pages** → `sparks-to-life` project → **Custom domains**
-   → *Set up a custom domain* → enter `candles.thehonuway.com`.
+1. **Cloudflare Pages** → the `tzfatcandles` project → **Custom domains**
+   → *Set up a custom domain* → enter `tzfatcandles.thehonuway.com`.
    Cloudflare shows the exact DNS record it wants.
 2. **Wherever thehonuway.com's DNS is managed** (registrar or DreamHost
    — the www record currently points at DreamHost), add that record:
-   a `CNAME` for `candles` → `sparks-to-life.pages.dev`.
+   a `CNAME` for `tzfatcandles` → `tzfatcandles.pages.dev`.
 
 Certificates are issued automatically once the CNAME resolves (usually
 minutes). If the subdomain ever changes, set a `CANDLE_HOST` env var on
 the Pages project instead of editing code.
+
+## Migrating to the `tzfatcandles` Cloudflare Pages project
+
+The site was first deployed under a Pages project named `sparks-to-life`.
+To move it to a project named `tzfatcandles` (account
+`91f1502e4d7aca3cba37b535db0ac38a`), in the Cloudflare dashboard:
+
+1. **Workers & Pages → Create → Pages → Connect to Git** → pick the
+   `zevpad/sparks-to-life` repo. Name the project **`tzfatcandles`**,
+   set the production branch to **`main`**, leave build command empty
+   and output directory `/`. Deploy — it builds the current `main`.
+2. **Re-set the environment variables** on the new project (they do NOT
+   carry over): Settings → Environment variables → add `ADMIN_PHONE` and
+   `CALLMEBOT_APIKEY` (see the beacon section above). Redeploy so they
+   take effect.
+3. **Attach the custom domain** `tzfatcandles.thehonuway.com` to the new
+   project (Custom domains → Set up), and point the `tzfatcandles` CNAME
+   at `tzfatcandles.pages.dev` per the section above.
+4. **Verify** the new project serves the site and the booking beacon
+   reaches WhatsApp.
+5. **Only then delete** the old `sparks-to-life` project (its
+   Settings → Delete project). Remove its custom domain first if one was
+   attached, so DNS doesn't dangle.
 
 ## Pricing
 
