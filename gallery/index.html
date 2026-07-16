@@ -308,23 +308,13 @@ section { padding: 4.5rem 1.25rem; position: relative; }
 }
 
 .portrait {
-  width: 240px;
-  height: 300px;
+  width: 260px;
+  height: 330px;
   border-radius: var(--radius);
   flex: 0 0 auto;
-  background:
-    radial-gradient(ellipse at 50% 35%, rgba(232, 161, 61, 0.4), transparent 65%),
-    var(--stone);
+  object-fit: cover;
+  object-position: 50% 42%;
   box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(62, 44, 27, 0.55);
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-align: center;
-  padding: 1rem;
 }
 
 .about-text { max-width: 480px; font-size: 1.08rem; }
@@ -664,9 +654,22 @@ section { padding: 4.5rem 1.25rem; position: relative; }
         <figcaption>The full parade — plus the rabbi keeping an eye on things.</figcaption>
       </figure>
 
+      <figure class="tile reveal">
+        <button type="button" data-lightbox>
+          <img src="../images/minion-alarmism.jpg" loading="lazy" alt="Minion-style beeswax figure gasping at an open book, on a base captioned Social Media Alarmism">
+        </button>
+        <figcaption>“Social Media Alarmism” — editorial commentary, in beeswax.</figcaption>
+      </figure>
+
+      <figure class="tile reveal">
+        <button type="button" data-lightbox>
+          <img src="../images/artist-sukkah.jpg" loading="lazy" alt="Moshe Chaim Levy in a tallit, waving the four species in his decorated sukkah">
+        </button>
+        <figcaption>The artist himself — waving the four species in the studio sukkah.</figcaption>
+      </figure>
+
       <!-- REPLACE: photo — biblical scene sculpture -->
       <!-- REPLACE: photo — Jewish chess set -->
-      <!-- REPLACE: photo — additional biblical scene or chess set -->
     </div>
   </div>
 </section>
@@ -674,8 +677,7 @@ section { padding: 4.5rem 1.25rem; position: relative; }
 <!-- ================= ABOUT ================= -->
 <section id="about">
   <div class="wrap about-flex">
-    <!-- REPLACE: portrait photo of Moshe Chaim in the studio -->
-    <div class="portrait reveal" role="img" aria-label="Portrait of Moshe Chaim Levy — photo coming soon">portrait<br>coming soon</div>
+    <img class="portrait reveal" src="../images/moshe-chaim-portrait.jpg" alt="Moshe Chaim Levy in his vaulted Old City studio" loading="lazy">
     <div class="about-text reveal">
       <h2>The Artist</h2>
       <p><strong>Moshe Chaim Levy</strong> is a renowned beeswax sculptor and graphic artist. From his home studio tucked into the ancient stone alleys of Tzfat's Old City, he shapes golden beeswax into penguins with personalities, biblical scenes and Jewish chess sets — every one a working candle.</p>
