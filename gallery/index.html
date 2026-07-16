@@ -11,10 +11,10 @@
 <meta property="og:title" content="McLevy's Candle Alchemy — Sculpt Light with Your Own Hands">
 <meta property="og:description" content="Hands-on beeswax candle sculpting workshops in the Old City of Tzfat. Every participant goes home with their own hand-made havdalah candle sculpture.">
 <!-- REPLACE: absolute URL of an OG share image (1200x630) once the final domain is known -->
-<meta property="og:image" content="../images/profession-penguins.jpg">
+<meta property="og:image" content="../images/hero-artist.jpg">
 
 <!-- Above-the-fold hero background: fetch at highest priority -->
-<link rel="preload" as="image" href="../images/profession-penguins.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="../images/hero-artist.jpg" fetchpriority="high">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3c3 4 5 6 5 9a5 5 0 0 1-10 0c0-3 2-5 5-9z' fill='%23E8A13D'/%3E%3Crect x='13' y='16' width='6' height='13' rx='2' fill='%23D9962E'/%3E%3C/svg%3E">
 
@@ -151,23 +151,26 @@ section { padding: 4.5rem 1.25rem; position: relative; }
   align-items: center;
   overflow: hidden;
   color: var(--cream);
-  /* umber paints before the photo arrives — no flash, no shift */
-  background: #1a1109 url('../images/profession-penguins.jpg') 55% 42% / cover no-repeat;
+  /* umber paints before the photo arrives — no flash, no shift.
+     right-anchored so the artisan and figures stay in frame; copy sits
+     over the dark left, which also buries the image's baked-in text */
+  background: #1a1109 url('../images/hero-artist.jpg') 78% 30% / cover no-repeat;
 }
 
-/* warm deep-umber overlay: strongest behind the copy at the left/bottom,
-   fading to transparent so the penguins stay warm and readable */
+/* warm deep-umber overlay: opaque on the left to bury the mockup's
+   baked-in text and carry the live copy, fading to clear over the scene */
 .hero-scrim {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(42, 28, 16, 0) 68%, rgba(42, 28, 16, 0.45) 100%),
+    linear-gradient(180deg, rgba(42, 28, 16, 0) 70%, rgba(42, 28, 16, 0.4) 100%),
     linear-gradient(90deg,
-      rgba(42, 28, 16, 0.88) 0%,
-      rgba(42, 28, 16, 0.78) 30%,
-      rgba(42, 28, 16, 0.42) 52%,
-      rgba(42, 28, 16, 0.1) 72%,
-      rgba(42, 28, 16, 0) 85%);
+      rgba(42, 28, 16, 0.98) 0%,
+      rgba(42, 28, 16, 0.97) 33%,
+      rgba(42, 28, 16, 0.85) 41%,
+      rgba(42, 28, 16, 0.4) 52%,
+      rgba(42, 28, 16, 0.12) 63%,
+      rgba(42, 28, 16, 0) 77%);
 }
 
 .hero-copy {
@@ -231,7 +234,7 @@ section { padding: 4.5rem 1.25rem; position: relative; }
 
 /* tablet: same layout, tighter copy panel, frame nudged to the figures */
 @media (min-width: 768px) and (max-width: 1100px) {
-  .hero { background-position: 48% 42%; }
+  .hero { background-position: 72% 28%; }
   .hero h1 { font-size: clamp(2.4rem, 5.8vw, 3.4rem); }
 }
 
@@ -242,7 +245,8 @@ section { padding: 4.5rem 1.25rem; position: relative; }
     min-height: 520px;
     align-items: flex-end;
   }
-  .hero { background-position: 52% 42%; }
+  /* right-anchored crops the baked-in text off-frame, keeps the artisan */
+  .hero { background-position: 74% 22%; }
   /* the photo's pale wall needs a stronger veil for AA contrast */
   .hero-scrim {
     background: linear-gradient(180deg,
