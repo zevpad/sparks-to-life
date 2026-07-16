@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handmade Creations — Gallery</title>
+  <meta name="description" content="Handmade one-of-a-kind pieces, made with love in Israel. Browse the gallery and order yours on WhatsApp.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <div class="hero-inner">
+      <h1 data-studio-name>Sparks to Life Studio</h1>
+      <p class="hero-tag">One-of-a-kind handmade pieces, made with love in Israel</p>
+      <div class="hero-actions">
+        <button class="btn btn-whatsapp" data-open-modal>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.66 15L2 22l5.15-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.06.77.8-2.98-.2-.31A8.2 8.2 0 1 1 12 20.2Zm4.5-6.13c-.25-.13-1.47-.72-1.7-.8-.22-.09-.39-.13-.55.12-.17.25-.64.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.35-2.93c-.25-.43.25-.4.72-1.34.08-.16.04-.3-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42h-.47c-.16 0-.43.06-.65.3-.22.25-.86.84-.86 2.05 0 1.2.88 2.37 1 2.53.12.17 1.73 2.64 4.2 3.7.59.26 1.05.4 1.4.52.6.19 1.13.16 1.56.1.47-.07 1.47-.6 1.67-1.18.2-.58.2-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></svg>
+          Order on WhatsApp
+        </button>
+        <a class="btn btn-call" data-call-link href="#">
+          Or call <span data-phone-display>050-000-0000</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= GALLERY ================= -->
+  <main>
+    <section class="gallery-section">
+      <h2>The Gallery</h2>
+      <p class="gallery-intro">Every piece is handmade and unique — when it's gone, it's gone. Custom orders welcome.</p>
+      <div class="grid" id="gallery-grid"></div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="cta-section">
+      <h2>Want one of your own?</h2>
+      <p>Tell us what caught your eye — or dream up something new. We'll answer on WhatsApp, usually the same day.</p>
+      <button class="btn btn-whatsapp btn-lg" data-open-modal>Start a WhatsApp chat</button>
+      <p class="cta-alt">Prefer to talk? <a data-call-link href="#">Call <span data-phone-display>050-000-0000</span></a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><span data-studio-name>Sparks to Life Studio</span> · Handmade in Israel</p>
+  </footer>
+
+  <!-- ================= WHATSAPP MODAL ================= -->
+  <div class="modal-backdrop" id="wa-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="wa-modal-title">
+      <button class="modal-close" data-close-modal aria-label="Close">&times;</button>
+      <h3 id="wa-modal-title">Say hi on WhatsApp</h3>
+      <p class="modal-sub">Four quick questions — we'll open WhatsApp with your message ready to send.</p>
+
+      <form id="wa-form">
+        <label for="wa-name">1. Your name</label>
+        <input id="wa-name" type="text" required autocomplete="name" placeholder="Your name">
+
+        <label for="wa-interest">2. What are you interested in?</label>
+        <select id="wa-interest" required>
+          <option value="A piece from the gallery">A piece from the gallery</option>
+          <option value="A custom-made piece">A custom-made piece</option>
+          <option value="Visiting the studio">Visiting the studio</option>
+        </select>
+
+        <label for="wa-timing">3. When would you like it (or when are you visiting)?</label>
+        <input id="wa-timing" type="text" placeholder="e.g. we're in Israel until July 28">
+
+        <label for="wa-wishlist">4. Wish list <span class="optional">(optional)</span></label>
+        <textarea id="wa-wishlist" rows="2" placeholder="e.g. a superhero penguin, a havdalah set, a birthday gift…"></textarea>
+
+        <button type="submit" class="btn btn-whatsapp btn-lg btn-block">Open WhatsApp</button>
+        <p class="modal-alt">No WhatsApp? <a data-call-link href="#">Call <span data-phone-display>050-000-0000</span></a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= LIGHTBOX ================= -->
+  <div class="lightbox" id="lightbox" hidden>
+    <img id="lightbox-img" src="" alt="">
+    <p id="lightbox-caption"></p>
+  </div>
+
+  <script src="site.js"></script>
+</body>
+</html>
