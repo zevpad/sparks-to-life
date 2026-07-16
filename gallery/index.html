@@ -13,9 +13,8 @@
 <!-- REPLACE: absolute URL of an OG share image (1200x630) once the final domain is known -->
 <meta property="og:image" content="../images/profession-penguins.jpg">
 
-<!-- Above-the-fold hero image: fetch at highest priority, right variant per viewport -->
-<link rel="preload" as="image" type="image/webp" href="../images/hero/hero-bench-m-580.webp" media="(max-width: 767px)">
-<link rel="preload" as="image" type="image/webp" imagesrcset="../images/hero/hero-bench-867.webp 867w, ../images/hero/hero-bench-1156.webp 1156w" imagesizes="100vw" media="(min-width: 768px)">
+<!-- Above-the-fold hero background: fetch at highest priority -->
+<link rel="preload" as="image" href="../images/profession-penguins.jpg" fetchpriority="high">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3c3 4 5 6 5 9a5 5 0 0 1-10 0c0-3 2-5 5-9z' fill='%23E8A13D'/%3E%3Crect x='13' y='16' width='6' height='13' rx='2' fill='%23D9962E'/%3E%3C/svg%3E">
 
@@ -110,7 +109,6 @@ section { padding: 4.5rem 1.25rem; position: relative; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .fab { animation: none !important; }
-  .hero-media img { animation: none !important; }
 }
 
 /* ---------- buttons ---------- */
@@ -153,42 +151,23 @@ section { padding: 4.5rem 1.25rem; position: relative; }
   align-items: center;
   overflow: hidden;
   color: var(--cream);
-  background: #1a1109; /* paints before the image arrives — no flash, no shift */
+  /* umber paints before the photo arrives — no flash, no shift */
+  background: #1a1109 url('../images/profession-penguins.jpg') 55% 42% / cover no-repeat;
 }
 
-.hero-media, .hero-media img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hero-media img {
-  object-fit: cover;
-  /* keep the hands, carving tool and penguin figure right of the copy */
-  object-position: 58% 42%;
-  transform-origin: 60% 45%;
-  animation: hero-zoom 26s ease-out forwards;
-}
-
-@keyframes hero-zoom {
-  from { transform: scale(1); }
-  to   { transform: scale(1.045); }
-}
-
-/* left panel dark enough for copy (and to bury the mockup's baked-in
-   text); centre and right stay warm and readable */
+/* warm deep-umber overlay: strongest behind the copy at the left/bottom,
+   fading to transparent so the penguins stay warm and readable */
 .hero-scrim {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(26, 17, 9, 0) 72%, rgba(26, 17, 9, 0.35) 100%),
+    linear-gradient(180deg, rgba(42, 28, 16, 0) 68%, rgba(42, 28, 16, 0.45) 100%),
     linear-gradient(90deg,
-      rgba(26, 17, 9, 0.93) 0%,
-      rgba(26, 17, 9, 0.85) 32%,
-      rgba(26, 17, 9, 0.45) 50%,
-      rgba(26, 17, 9, 0.12) 66%,
-      rgba(26, 17, 9, 0) 80%);
+      rgba(42, 28, 16, 0.88) 0%,
+      rgba(42, 28, 16, 0.78) 30%,
+      rgba(42, 28, 16, 0.42) 52%,
+      rgba(42, 28, 16, 0.1) 72%,
+      rgba(42, 28, 16, 0) 85%);
 }
 
 .hero-copy {
@@ -197,6 +176,19 @@ section { padding: 4.5rem 1.25rem; position: relative; }
   max-width: 700px;
   padding-left: clamp(1.5rem, 7vw, 6.5rem);
   padding-right: 2rem;
+}
+
+/* subtle candlelight glow behind the headline */
+.hero-copy::before {
+  content: '';
+  position: absolute;
+  left: -6%;
+  top: -14%;
+  width: 115%;
+  height: 82%;
+  background: radial-gradient(ellipse at 38% 45%, rgba(232, 161, 61, 0.18), transparent 68%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .hero-eyebrow {
@@ -239,7 +231,7 @@ section { padding: 4.5rem 1.25rem; position: relative; }
 
 /* tablet: same layout, tighter copy panel, frame nudged to the figures */
 @media (min-width: 768px) and (max-width: 1100px) {
-  .hero-media img { object-position: 46% 42%; }
+  .hero { background-position: 48% 42%; }
   .hero h1 { font-size: clamp(2.4rem, 5.8vw, 3.4rem); }
 }
 
@@ -250,14 +242,14 @@ section { padding: 4.5rem 1.25rem; position: relative; }
     min-height: 520px;
     align-items: flex-end;
   }
-  .hero-media img { object-position: 48% 45%; }
+  .hero { background-position: 52% 42%; }
+  /* the photo's pale wall needs a stronger veil for AA contrast */
   .hero-scrim {
     background: linear-gradient(180deg,
-      rgba(26, 17, 9, 0.25) 0%,
-      rgba(26, 17, 9, 0) 22%,
-      rgba(26, 17, 9, 0) 42%,
-      rgba(26, 17, 9, 0.55) 62%,
-      rgba(26, 17, 9, 0.93) 88%);
+      rgba(42, 28, 16, 0.42) 0%,
+      rgba(42, 28, 16, 0.55) 28%,
+      rgba(42, 28, 16, 0.78) 55%,
+      rgba(42, 28, 16, 0.94) 100%);
   }
   .hero-copy {
     padding: 0 1.4rem 2.2rem;
@@ -598,23 +590,12 @@ section { padding: 4.5rem 1.25rem; position: relative; }
 
 <!-- ================= HERO ================= -->
 <header class="hero" id="top">
-  <picture class="hero-media">
-    <!-- faceless composition: hands, carving tool and beeswax figures at the bench -->
-    <source media="(max-width: 767px)" type="image/webp" srcset="../images/hero/hero-bench-m-580.webp">
-    <source media="(max-width: 767px)" srcset="../images/hero/hero-bench-m-580.jpg">
-    <source type="image/webp" srcset="../images/hero/hero-bench-867.webp 867w, ../images/hero/hero-bench-1156.webp 1156w" sizes="100vw">
-    <img src="../images/hero/hero-bench-1156.jpg"
-         srcset="../images/hero/hero-bench-867.jpg 867w, ../images/hero/hero-bench-1156.jpg 1156w"
-         sizes="100vw"
-         width="1156" height="479"
-         alt="Hands carving a beeswax penguin candle at a candlelit workbench in a Tzfat stone workshop."
-         fetchpriority="high" decoding="async">
-  </picture>
+  <!-- hero background: real studio photo (profession penguins), set in CSS -->
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-copy">
     <p class="hero-eyebrow">Handcrafted in Tzfat</p>
     <h1>Ancient Craft.<br>Timeless Light.</h1>
-    <p class="hero-sub">Handcrafted beeswax candles from Tzfat, shaped one at a time with tradition, intention, and care.</p>
+    <p class="hero-sub">Hands-on beeswax sculpting workshops in the Old City of Tzfat — every participant takes home their own creation.</p>
     <div class="hero-actions">
       <button class="btn btn-wa" data-open-modal>
         <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.66 15L2 22l5.15-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.06.77.8-2.98-.2-.31A8.2 8.2 0 1 1 12 20.2Zm4.5-6.13c-.25-.13-1.47-.72-1.7-.8-.22-.09-.39-.13-.55.12-.17.25-.64.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.35-2.93c-.25-.43.25-.4.72-1.34.08-.16.04-.3-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42h-.47c-.16 0-.43.06-.65.3-.22.25-.86.84-.86 2.05 0 1.2.88 2.37 1 2.53.12.17 1.73 2.64 4.2 3.7.59.26 1.05.4 1.4.52.6.19 1.13.16 1.56.1.47-.07 1.47-.6 1.67-1.18.2-.58.2-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></svg>
